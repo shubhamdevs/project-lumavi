@@ -11,6 +11,7 @@ interface LogoUploaderProps {
   workspaceId: string;
   currentLogoUrl: string | null;
   variant: 'light' | 'dark';
+  onUploadComplete: (url: string, newScore: number) => void;
   onAnalysisComplete: (signals: Partial<BrandSignals>) => void;
 }
 
@@ -18,6 +19,7 @@ export default function LogoUploader({
   workspaceId,
   currentLogoUrl,
   variant,
+  onUploadComplete,
   onAnalysisComplete,
 }: LogoUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
@@ -103,6 +105,7 @@ export default function LogoUploader({
         return;
       }
 
+      onUploadComplete(response.url, response.completeness ?? 0);
       toast.success(`${variant === 'light' ? 'Light' : 'Dark'} logo uploaded successfully!`);
 
       // 2. Only if light background variant, call Gemini Vision

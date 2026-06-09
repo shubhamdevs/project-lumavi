@@ -157,6 +157,14 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
     if (signals.brandPersonality) setBrandPersonality(signals.brandPersonality);
     if (signals.typographyFeel) setTypographyFeel(signals.typographyFeel);
 
+    // Expand all sections where signals were extracted so they are visible
+    setOpenSections({
+      visual: true,
+      voice: true,
+      audience: true,
+      typography: true,
+    });
+
     setShowAIBanner(true);
     setIsHighlighted(true);
 
@@ -348,10 +356,12 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
                       workspaceId={workspaceId}
                       currentLogoUrl={logoLight}
                       variant="light"
+                      onUploadComplete={(url, newScore) => {
+                        setLogoLight(url);
+                        setCompleteness(newScore);
+                      }}
                       onAnalysisComplete={(signals) => {
                         handleAnalysisComplete(signals);
-                        setLogoLight(logoLight); // trigger reload helper
-                        // Re-fetch logos in state by reading from action response
                       }}
                     />
                     <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
@@ -367,6 +377,10 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
                       workspaceId={workspaceId}
                       currentLogoUrl={logoDark}
                       variant="dark"
+                      onUploadComplete={(url, newScore) => {
+                        setLogoDark(url);
+                        setCompleteness(newScore);
+                      }}
                       onAnalysisComplete={() => {}}
                     />
                   </div>
