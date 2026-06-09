@@ -14,4 +14,4 @@ end;
 $$;
 
 -- Configure PostgREST to call this function before executing any request
-alter role authenticator set db_pre_request = 'public.set_app_user_id';
+alter role authenticator set pgrst.db_pre_request = 'public.set_app_user_id';
