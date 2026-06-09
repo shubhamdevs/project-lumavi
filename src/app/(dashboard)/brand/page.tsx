@@ -1,7 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import { createClient } from '@/lib/supabase/server';
+import { getSupabaseServerClient } from '@/lib/supabase/server';
 import BrandIntelligenceClient from './BrandIntelligenceClient';
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default async function BrandIntelligencePage() {
     redirect('/login');
   }
 
-  const supabase = await createClient();
+  const supabase = await getSupabaseServerClient();
 
   // 1. Retrieve the user's workspace membership
   const { data: memberData, error: memberError } = await supabase

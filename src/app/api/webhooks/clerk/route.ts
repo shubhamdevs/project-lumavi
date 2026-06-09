@@ -1,78 +1,93 @@
-import { Webhook } from 'svix'
-import { headers } from 'next/headers'
-import { WebhookEvent } from '@clerk/nextjs/server'
-import { createServiceRoleClient } from '@/lib/supabase/service'
-import { NextResponse } from 'next/server'
+import { Webhook } from 'svix';
+import { headers } from 'next/headers';
+import { WebhookEvent } from '@clerk/nextjs/server';
+import { getSupabaseServiceClient } from '@/lib/supabase/service';
+import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
-  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
+  const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
-  if (!WEBHOOK_SECRET) {
-    throw new Error('Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
+  if (!CLERK_WEBHOOK_SECRET) {
+    return NextResponse.json(
+      { error: 'Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env.local' },
+      { status: 500 }
+    );
   }
 
-  // Get the headers
-  const headerPayload = await headers()
-  const svix_id = headerPayload.get('svix-id')
-  const svix_timestamp = headerPayload.get('svix-timestamp')
-  const svix_signature = headerPayload.get('svix-signature')
+  // 1. Read raw request body as text using request.text()
+  const payload = await req.text();
+
+  // 2. Extract these headers: svix-id, svix-timestamp, svix-signature
+  const headerPayload = await headers();
+  const svix_id = headerPayload.get('svix-id');
+  const svix_timestamp = headerPayload.get('svix-timestamp');
+  const svix_signature = headerPayload.get('svix-signature');
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new NextResponse('Error occured -- no svix headers', {
-      status: 400,
-    })
+    return NextResponse.json(
+      { error: 'Error occurred -- missing svix headers' },
+      { status: 400 }
+    );
   }
 
-  // Get the body
-  const payload = await req.json()
-  const body = JSON.stringify(payload)
+  // 3. Verify signature using Webhook from svix package and CLERK_WEBHOOK_SECRET
+  const wh = new Webhook(CLERK_WEBHOOK_SECRET);
+  let evt: WebhookEvent;
 
-  // Create a new Svix instance with your secret.
-  const wh = new Webhook(WEBHOOK_SECRET)
-
-  let evt: WebhookEvent
-
-  // Verify the payload with the headers
   try {
-    evt = wh.verify(body, {
+    evt = wh.verify(payload, {
       'svix-id': svix_id,
       'svix-timestamp': svix_timestamp,
       'svix-signature': svix_signature,
-    }) as WebhookEvent
-  } catch (err) {
-    console.error('Error verifying webhook:', err)
-    return new NextResponse('Error occured', {
-      status: 400,
-    })
+    }) as WebhookEvent;
+  } catch (err: any) {
+    // 4. If verification fails, return status 400
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
-  // Handle the webhook
-  const eventType = evt.type
+  // 5. Parse the verified payload as JSON
+  const eventType = evt.type;
 
+  // 6. Handle event type user.created
   if (eventType === 'user.created') {
-    const { id, email_addresses, first_name, last_name, image_url } = evt.data
+    const { id, email_addresses, first_name, last_name, image_url } = evt.data;
+    const email = email_addresses?.[0]?.email_address;
+    const fullName = [first_name, last_name].filter(Boolean).join(' ') || null;
+    const avatarUrl = image_url || null;
 
-    const email = email_addresses[0]?.email_address
-    const fullName = `${first_name || ''} ${last_name || ''}`.trim()
+    if (!email) {
+      return NextResponse.json({ error: 'Missing email address' }, { status: 400 });
+    }
 
-    const supabase = createServiceRoleClient()
+    try {
+      const supabase = getSupabaseServiceClient();
 
-    const { error } = await supabase
-      .from('users')
-      .upsert({
-        id,
-        email,
-        full_name: fullName,
-        avatar_url: image_url,
-      })
+      // Upsert into users table
+      const { error } = await supabase
+        .from('users')
+        .upsert(
+          {
+            id,
+            email,
+            full_name: fullName,
+            avatar_url: avatarUrl,
+          },
+          {
+            onConflict: 'id',
+          }
+        );
 
-    if (error) {
-      console.error('Error inserting user into Supabase:', error)
-      return new NextResponse('Database error', { status: 500 })
+      if (error) {
+        // 8. Handle errors: return status 500
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+    } catch (err: any) {
+      // 8. Handle errors: return status 500
+      return NextResponse.json({ error: err.message || 'Database error' }, { status: 500 });
     }
   }
 
-  return new NextResponse('Webhook handled', { status: 200 })
+  // 7. Return status 200
+  return NextResponse.json({ success: true }, { status: 200 });
 }

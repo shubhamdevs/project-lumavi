@@ -2,7 +2,7 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import { createServiceRoleClient } from '@/lib/supabase/service';
+import { getSupabaseServiceClient } from '@/lib/supabase/service';
 
 function calculateCompleteness(guideline: any) {
   let score = 0;
@@ -62,7 +62,7 @@ export async function saveBrandSection(workspaceId: string, updates: Record<stri
       return { success: false, error: 'Unauthorized' };
     }
 
-    const supabase = createServiceRoleClient();
+    const supabase = getSupabaseServiceClient();
 
     // 1. Fetch current guidelines row to merge changes and calculate correct completeness score
     const { data: current, error: fetchError } = await supabase
@@ -128,7 +128,7 @@ export async function uploadBrandLogo(workspaceId: string, formData: FormData) {
 
     const ext = file.name.split('.').pop() || 'png';
     const path = `${workspaceId}/logo-${type}.${ext}`;
-    const supabase = createServiceRoleClient();
+    const supabase = getSupabaseServiceClient();
 
     // 1. Ensure storage bucket exists
     try {

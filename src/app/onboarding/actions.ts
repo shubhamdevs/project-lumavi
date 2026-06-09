@@ -2,7 +2,7 @@
 'use server';
 
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { createServiceRoleClient } from '@/lib/supabase/service';
+import { getSupabaseServiceClient } from '@/lib/supabase/service';
 
 export interface OnboardingData {
   org: { name: string; industry: string; useCase: string };
@@ -27,7 +27,7 @@ export async function saveOnboardingData(data: OnboardingData) {
       return { success: false, error: 'Unauthorized: User not authenticated' };
     }
 
-    const supabase = createServiceRoleClient();
+    const supabase = getSupabaseServiceClient();
 
     // 1. Ensure the user exists in the Supabase `users` table to satisfy foreign key constraints.
     // (This acts as a fallback for potential Clerk webhook latency).
