@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -88,13 +89,14 @@ export default function Topbar({ onToggleSidebar }: TopbarProps) {
 
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 rounded-xl border border-neutral-200/50 dark:border-neutral-800/50 bg-white dark:bg-neutral-900 p-1.5 shadow-lg animate-in fade-in slide-in-from-top-1 duration-150">
-              <button
-                onClick={() => handleAction('Image Generator')}
-                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800/50 cursor-pointer text-left"
+              <Link
+                href="/generate/image"
+                onClick={() => setDropdownOpen(false)}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800/50 text-left"
               >
                 <i className="ti ti-photo text-base text-neutral-400" />
                 <span>Image Generator</span>
-              </button>
+              </Link>
               <button
                 onClick={() => handleAction('Video Generator')}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800/50 cursor-pointer text-left"

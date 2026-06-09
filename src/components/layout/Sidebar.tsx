@@ -37,11 +37,11 @@ export default function Sidebar({
     { name: 'Brand Intelligence', href: '/brand', icon: 'ti-palette' },
   ];
 
-  // Mock links for upcoming features
+  // Content creation links
   const creatorLinks = [
-    { name: 'Image Generator', icon: 'ti-photo' },
-    { name: 'Video Generator', icon: 'ti-video' },
-    { name: 'Canvas Creator', icon: 'ti-layout-board' },
+    { name: 'Image Generator', href: '/generate/image', icon: 'ti-photo' },
+    { name: 'Video Generator', icon: 'ti-video', isComingSoon: true },
+    { name: 'Canvas Creator', icon: 'ti-layout-board', isComingSoon: true },
   ];
 
   const libraryLinks = [
@@ -172,22 +172,47 @@ export default function Sidebar({
               Creators
             </span>
             <ul className="space-y-1">
-              {creatorLinks.map((link) => (
-                <li key={link.name}>
-                  <button
-                    onClick={() => handleComingSoon(link.name)}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm text-neutral-400 dark:text-neutral-500 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/10 cursor-pointer group text-left"
-                  >
-                    <div className="flex items-center gap-3">
+              {creatorLinks.map((link) => {
+                const isActive = pathname === link.href;
+                if (link.isComingSoon || !link.href) {
+                  return (
+                    <li key={link.name}>
+                      <button
+                        onClick={() => handleComingSoon(link.name)}
+                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm text-neutral-400 dark:text-neutral-500 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/10 cursor-pointer group text-left"
+                      >
+                        <div className="flex items-center gap-3">
+                          <i className={`ti ${link.icon} text-base shrink-0`} />
+                          <span>{link.name}</span>
+                        </div>
+                        <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 px-1.5 py-0.5 rounded font-medium opacity-80 group-hover:opacity-100">
+                          Soon
+                        </span>
+                      </button>
+                    </li>
+                  );
+                }
+
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={onClose}
+                      className={`
+                        flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-150 group
+                        ${
+                          isActive
+                            ? 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-900 dark:text-neutral-50 font-medium'
+                            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800/30'
+                        }
+                      `}
+                    >
                       <i className={`ti ${link.icon} text-base shrink-0`} />
                       <span>{link.name}</span>
-                    </div>
-                    <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 px-1.5 py-0.5 rounded font-medium opacity-80 group-hover:opacity-100">
-                      Soon
-                    </span>
-                  </button>
-                </li>
-              ))}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

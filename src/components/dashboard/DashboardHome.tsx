@@ -221,9 +221,9 @@ export default function DashboardHome({ data }: { data: DashboardPayload }) {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Image Generator Card */}
-                <div
-                  onClick={() => handleComingSoon('Image Generator')}
-                  className="p-5 rounded-xl border border-neutral-200/50 dark:border-neutral-800/50 bg-white dark:bg-neutral-900/60 hover:bg-neutral-50/40 dark:hover:bg-neutral-800/20 transition duration-150 cursor-pointer flex flex-col gap-3 group"
+                <Link
+                  href="/generate/image"
+                  className="p-5 rounded-xl border border-neutral-200/50 dark:border-neutral-800/50 bg-white dark:bg-neutral-900/60 hover:bg-neutral-50/40 dark:hover:bg-neutral-800/20 transition duration-150 flex flex-col gap-3 group"
                 >
                   <div className="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
                     <i className="ti ti-photo text-lg group-hover:scale-105 transition" />
@@ -234,7 +234,7 @@ export default function DashboardHome({ data }: { data: DashboardPayload }) {
                       Generate brand-aligned marketing graphics.
                     </p>
                   </div>
-                </div>
+                </Link>
 
                 {/* Video Generator Card */}
                 <div
@@ -287,13 +287,11 @@ export default function DashboardHome({ data }: { data: DashboardPayload }) {
                   Start generating or uploading assets to populate your content library.
                 </p>
                 {brandCompleteness >= 20 ? (
-                  <Button
-                    onClick={() => handleComingSoon('Asset Generation')}
-                    className="mt-4 shrink-0"
-                    size="sm"
-                  >
-                    Generate First Asset
-                  </Button>
+                  <Link href="/generate/image" className="mt-4 shrink-0">
+                    <Button size="sm">
+                      Generate First Asset
+                    </Button>
+                  </Link>
                 ) : (
                   <Link href="/brand" className="mt-4">
                     <Button variant="outline" size="sm">
