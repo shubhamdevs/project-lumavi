@@ -2,7 +2,7 @@ import React from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { getSupabaseServerClient } from '@/lib/supabase/server';
-import BrandIntelligenceClient from './BrandIntelligenceClient';
+import BrandHub from '@/components/brand/BrandHub';
 
 export const metadata = {
   title: 'Brand Intelligence | Lumavi',
@@ -19,10 +19,10 @@ export default async function BrandIntelligencePage() {
 
   const supabase = await getSupabaseServerClient();
 
-  // 1. Retrieve the user's workspace membership
+  // 1. Retrieve the user's workspace membership and join workspaces
   const { data: memberData, error: memberError } = await supabase
     .from('workspace_members')
-    .select('workspace_id')
+    .select('workspace_id, workspaces(*)')
     .eq('user_id', userId)
     .limit(1)
     .maybeSingle();
@@ -50,8 +50,8 @@ export default async function BrandIntelligencePage() {
       .insert({
         workspace_id: workspaceId,
         colors: { primary: '', secondary: '' },
-        typography: { display: '', body: '' },
-        logos: {},
+        typography: { display: '', body: '', feel: '' },
+        logos: { light: '', dark: '' },
         tone: { archetype: '' },
         completeness: 0,
       })
@@ -61,12 +61,12 @@ export default async function BrandIntelligencePage() {
     if (!insertError && newGuideline) {
       brandGuideline = newGuideline;
     } else {
-      // Fallback fallback in case of write restrictions
+      // Fallback in case of write restrictions
       brandGuideline = {
         workspace_id: workspaceId,
         colors: { primary: '', secondary: '' },
-        typography: { display: '', body: '' },
-        logos: {},
+        typography: { display: '', body: '', feel: '' },
+        logos: { light: '', dark: '' },
         tone: { archetype: '' },
         completeness: 0,
       };
@@ -74,9 +74,9 @@ export default async function BrandIntelligencePage() {
   }
 
   return (
-    <main className="p-6 md:p-10 bg-neutral-50/30 dark:bg-neutral-950/20 min-h-screen">
+    <main className="p-6 md:p-10 min-h-screen">
       <h1 className="sr-only">Brand Intelligence Configuration</h1>
-      <BrandIntelligenceClient initialData={brandGuideline} workspaceId={workspaceId} />
+      <BrandHub initialData={brandGuideline} workspaceId={workspaceId} />
     </main>
   );
 }
