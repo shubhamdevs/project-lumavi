@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { getSupabaseBrowserClient } from '@/lib/supabase/client';
+import { useAuth } from '@clerk/nextjs';
 import {
   IconSparkles,
   IconLoader2,
@@ -59,6 +60,25 @@ export default function ImageGeneratorClient({
   const [activeStep, setActiveStep] = useState(0);
 
   const supabase = getSupabaseBrowserClient();
+  const { getToken } = useAuth();
+
+  // Sync Clerk authentication with Supabase browser client
+  useEffect(() => {
+    const syncAuth = async () => {
+      try {
+        const token = await getToken({ template: 'supabase' });
+        if (token) {
+          await supabase.auth.setSession({
+            access_token: token,
+            refresh_token: '',
+          });
+        }
+      } catch (err) {
+        console.error('Failed to sync auth token with Supabase client:', err);
+      }
+    };
+    syncAuth();
+  }, [getToken, supabase]);
 
   // Calculate current credit cost
   const creditCost = quality === 'high' ? 6 : 3;
@@ -83,6 +103,39 @@ export default function ImageGeneratorClient({
   // Real-time listener for main job
   useEffect(() => {
     if (!jobId) return;
+
+    // Check current status immediately in case it changed before the channel subscribed
+    const checkInitialStatus = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('generation_jobs')
+          .select('*')
+          .eq('id', jobId)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error fetching initial job status:', error);
+          return;
+        }
+
+        if (data) {
+          setJobStatus(data.status);
+          if (data.status === 'completed') {
+            setOutputUrl(data.output_url);
+            setConstructedPrompt(data.prompt_constructed);
+            setBalance((prev) => Math.max(0, prev - (data.credits_cost || creditCost)));
+            setIsGenerating(false);
+          } else if (data.status === 'failed') {
+            setError(data.error_message || 'Generation failed');
+            setIsGenerating(false);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to check initial job status:', err);
+      }
+    };
+
+    checkInitialStatus();
 
     const channel = supabase
       .channel(`job-status-${jobId}`)
