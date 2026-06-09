@@ -25,6 +25,10 @@ export interface OnboardingData {
   invites: string[];
 }
 
+export async function completeOnboarding(data: any) {
+  return saveOnboardingData(data);
+}
+
 export async function saveOnboardingData(data: OnboardingData) {
   try {
     const authData = await auth();
@@ -142,6 +146,7 @@ export async function saveOnboardingData(data: OnboardingData) {
         audience: data.brand.audience || null,
         lighting: data.brand.lighting || null,
         composition: data.brand.composition || null,
+        completeness: calculateCompleteness(data.brand),
       });
 
     if (brandError) {
@@ -174,4 +179,54 @@ export async function saveOnboardingData(data: OnboardingData) {
     console.error('Unexpected error in saveOnboardingData:', err);
     return { success: false, error: err.message || 'An unexpected error occurred' };
   }
+}
+
+function calculateCompleteness(brand: OnboardingData['brand']): number {
+  let score = 0;
+
+  // Colors: +15
+  if (brand.primaryColor || brand.secondaryColor) {
+    score += 15;
+  }
+
+  // Typography: +10
+  if (brand.fontDisplay || brand.fontBody) {
+    score += 10;
+  }
+
+  // Imagery & Photography style: +15
+  if (brand.imageryStyle) {
+    if (brand.imageryStyle !== 'Photography' || brand.photographyStyle) {
+      score += 15;
+    }
+  }
+
+  // Tone: +10
+  if (brand.tone) {
+    score += 10;
+  }
+
+  // Brand keywords: +15
+  const keywords = brand.brandKeywords || [];
+  const validKeywords = keywords.filter((k) => k && k.trim().length > 0);
+  if (validKeywords.length >= 3) {
+    score += 15;
+  }
+
+  // Audience: +15
+  if (brand.audience && brand.audience.trim().length > 0) {
+    score += 15;
+  }
+
+  // Color mood: +10
+  if (brand.colorMood && brand.colorMood.trim().length > 0) {
+    score += 10;
+  }
+
+  // Brand is not: +10
+  if (brand.brandIsNot && brand.brandIsNot.trim().length > 0) {
+    score += 10;
+  }
+
+  return score;
 }
