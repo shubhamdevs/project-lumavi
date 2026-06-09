@@ -44,6 +44,7 @@ export async function saveOnboardingData(data: OnboardingData) {
       .maybeSingle();
 
     if (checkUserError) {
+      console.error('Error checking user in database:', checkUserError);
       return { success: false, error: `Database error during user check: ${checkUserError.message}` };
     }
 
@@ -70,6 +71,7 @@ export async function saveOnboardingData(data: OnboardingData) {
         });
 
       if (insertUserError) {
+        console.error('Error inserting user to database:', insertUserError);
         return { success: false, error: `Failed to register user in database: ${insertUserError.message}` };
       }
     }
@@ -88,6 +90,7 @@ export async function saveOnboardingData(data: OnboardingData) {
       .single();
 
     if (orgError) {
+      console.error('Error creating organization in database:', orgError);
       return { success: false, error: `Failed to create organization: ${orgError.message}` };
     }
 
@@ -103,6 +106,7 @@ export async function saveOnboardingData(data: OnboardingData) {
       .single();
 
     if (wsError) {
+      console.error('Error creating workspace in database:', wsError);
       return { success: false, error: `Failed to create workspace: ${wsError.message}` };
     }
 
@@ -118,6 +122,7 @@ export async function saveOnboardingData(data: OnboardingData) {
       });
 
     if (memberError) {
+      console.error('Error joining workspace in database:', memberError);
       return { success: false, error: `Failed to join workspace: ${memberError.message}` };
     }
 
@@ -140,6 +145,7 @@ export async function saveOnboardingData(data: OnboardingData) {
       });
 
     if (brandError) {
+      console.error('Error creating brand guidelines:', brandError);
       return { success: false, error: `Failed to create brand guidelines: ${brandError.message}` };
     }
 
@@ -158,12 +164,14 @@ export async function saveOnboardingData(data: OnboardingData) {
         .insert(inviteRows);
 
       if (inviteError) {
+        console.error('Error creating invitations:', inviteError);
         return { success: false, error: `Failed to create team invitations: ${inviteError.message}` };
       }
     }
 
     return { success: true, workspaceId: wsRow.id };
   } catch (err: any) {
+    console.error('Unexpected error in saveOnboardingData:', err);
     return { success: false, error: err.message || 'An unexpected error occurred' };
   }
 }
