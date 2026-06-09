@@ -25,6 +25,12 @@ export default function OnboardingWizard() {
       tone: '',
       photographyStyle: '',
       brandIsNot: '',
+      imageryStyle: 'Photography',
+      colorMood: '',
+      brandKeywords: ['', '', ''],
+      audience: '',
+      lighting: '',
+      composition: '',
     },
     invites: [] as string[],
   });

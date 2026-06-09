@@ -15,6 +15,12 @@ export interface OnboardingData {
     tone: string;
     photographyStyle: string;
     brandIsNot: string;
+    imageryStyle: string;
+    colorMood: string;
+    brandKeywords: string[];
+    audience: string;
+    lighting: string;
+    composition: string;
   };
   invites: string[];
 }
@@ -125,6 +131,12 @@ export async function saveOnboardingData(data: OnboardingData) {
         tone: { archetype: data.brand.tone },
         photography_style: data.brand.photographyStyle || null,
         brand_is_not: data.brand.brandIsNot || null,
+        imagery_style: data.brand.imageryStyle || null,
+        color_mood: data.brand.colorMood || null,
+        brand_keywords: data.brand.brandKeywords || [],
+        audience: data.brand.audience || null,
+        lighting: data.brand.lighting || null,
+        composition: data.brand.composition || null,
       });
 
     if (brandError) {

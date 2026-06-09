@@ -33,6 +33,7 @@ import {
   IconLoader2,
   IconAlertCircle,
   IconCheck,
+  IconCube,
 } from '@tabler/icons-react';
 import { saveBrandSection, uploadBrandLogo } from './actions';
 
@@ -58,6 +59,7 @@ export default function BrandIntelligenceClient({
   const [secondaryColor, setSecondaryColor] = useState(initialData.colors?.secondary || '');
   const [fontDisplay, setFontDisplay] = useState(initialData.typography?.display || '');
   const [fontBody, setFontBody] = useState(initialData.typography?.body || '');
+  const [imageryStyle, setImageryStyle] = useState(initialData.imagery_style || 'Photography');
   const [photographyStyle, setPhotographyStyle] = useState(initialData.photography_style || '');
   const [colorMood, setColorMood] = useState(initialData.color_mood || '');
   const [composition, setComposition] = useState(initialData.composition || '');
@@ -86,6 +88,13 @@ export default function BrandIntelligenceClient({
   const lightInputRef = useRef<HTMLInputElement>(null);
   const darkInputRef = useRef<HTMLInputElement>(null);
 
+  // Imagery Styles mapping
+  const imageryStyles = [
+    { id: 'Photography', label: 'Photography', desc: 'Camera lens, real-life scenes and products', icon: IconCamera },
+    { id: '3D Render', label: '3D Render', desc: 'CGI, octane render, stylized or clay 3D', icon: IconCube },
+    { id: 'Illustration', label: 'Illustration', desc: 'Digital painting, flat vector art, drawings', icon: IconBrush },
+  ];
+
   // Photographic Styles mapping
   const photographyStyles = [
     { id: 'Editorial', label: 'Editorial', desc: 'Clean, minimal, lots of white space', icon: IconNews },
@@ -110,9 +119,11 @@ export default function BrandIntelligenceClient({
       score += 10;
     }
 
-    // Photography style: +15
-    if (photographyStyle) {
-      score += 15;
+    // Imagery & Photography style: +15
+    if (imageryStyle) {
+      if (imageryStyle !== 'Photography' || photographyStyle) {
+        score += 15;
+      }
     }
 
     // Tone archetype: +10
@@ -147,6 +158,7 @@ export default function BrandIntelligenceClient({
     secondaryColor,
     fontDisplay,
     fontBody,
+    imageryStyle,
     photographyStyle,
     tone,
     keyword1,
@@ -184,6 +196,7 @@ export default function BrandIntelligenceClient({
     const response = await saveBrandSection(workspaceId, {
       colors: { primary: primaryColor, secondary: secondaryColor },
       typography: { display: fontDisplay, body: fontBody },
+      imagery_style: imageryStyle || null,
       photography_style: photographyStyle || null,
       color_mood: colorMood || null,
       composition: composition || null,
@@ -411,42 +424,79 @@ export default function BrandIntelligenceClient({
                   </div>
                 </div>
 
-                {/* Photography Selector */}
-                <div className="space-y-2">
+                {/* Imagery Style Selector */}
+                <div className="space-y-2 border-t pt-4 border-neutral-100 dark:border-neutral-800">
                   <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    What best describes your visual style?
+                    Imagery Style
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {photographyStyles.map((style) => {
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {imageryStyles.map((style) => {
                       const IconComponent = style.icon;
-                      const isSelected = photographyStyle === style.id;
+                      const isSelected = imageryStyle === style.id;
                       return (
                         <button
                           type="button"
                           key={style.id}
-                          onClick={() => setPhotographyStyle(style.id)}
-                          className={`flex items-start gap-3 p-3 text-left rounded-xl border transition-all cursor-pointer ${
+                          onClick={() => setImageryStyle(style.id)}
+                          className={`flex flex-col items-center justify-center p-3 text-center rounded-xl border transition-all cursor-pointer ${
                             isSelected
                               ? 'border-violet-600 bg-violet-50/50 dark:bg-violet-950/20'
                               : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900'
                           }`}
                         >
-                          <div className={`p-2 rounded-lg ${isSelected ? 'bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300' : 'bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400'}`}>
+                          <div className={`p-2 rounded-lg mb-2 ${isSelected ? 'bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300' : 'bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400'}`}>
                             <IconComponent className="w-5 h-5 flex-shrink-0" />
                           </div>
-                          <div className="space-y-0.5">
-                            <span className="font-semibold text-sm text-neutral-800 dark:text-neutral-200">
-                              {style.label}
-                            </span>
-                            <p className="text-xs text-neutral-500 leading-tight">
-                              {style.desc}
-                            </p>
-                          </div>
+                          <span className="font-semibold text-sm text-neutral-800 dark:text-neutral-200 block mb-0.5">
+                            {style.label}
+                          </span>
+                          <p className="text-[10px] text-neutral-400 leading-tight">
+                            {style.desc}
+                          </p>
                         </button>
                       );
                     })}
                   </div>
                 </div>
+
+                {/* Photography Selector */}
+                {imageryStyle === 'Photography' && (
+                  <div className="space-y-2 border-t pt-4 border-neutral-100 dark:border-neutral-800">
+                    <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                      What best describes your photography style?
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {photographyStyles.map((style) => {
+                        const IconComponent = style.icon;
+                        const isSelected = photographyStyle === style.id;
+                        return (
+                          <button
+                            type="button"
+                            key={style.id}
+                            onClick={() => setPhotographyStyle(style.id)}
+                            className={`flex items-start gap-3 p-3 text-left rounded-xl border transition-all cursor-pointer ${
+                              isSelected
+                                ? 'border-violet-600 bg-violet-50/50 dark:bg-violet-950/20'
+                                : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900'
+                            }`}
+                          >
+                            <div className={`p-2 rounded-lg ${isSelected ? 'bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300' : 'bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400'}`}>
+                              <IconComponent className="w-5 h-5 flex-shrink-0" />
+                            </div>
+                            <div className="space-y-0.5">
+                              <span className="font-semibold text-sm text-neutral-800 dark:text-neutral-200">
+                                {style.label}
+                              </span>
+                              <p className="text-xs text-neutral-500 leading-tight">
+                                {style.desc}
+                              </p>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 {/* Color Mood */}
                 <div className="space-y-2">

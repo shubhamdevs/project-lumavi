@@ -19,9 +19,11 @@ function calculateCompleteness(guideline: any) {
     score += 10;
   }
 
-  // Photography style selected: +15
-  if (guideline.photography_style) {
-    score += 15;
+  // Imagery & Photography style selected: +15
+  if (guideline.imagery_style) {
+    if (guideline.imagery_style !== 'Photography' || guideline.photography_style) {
+      score += 15;
+    }
   }
 
   // Tone selected: +10

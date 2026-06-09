@@ -22,8 +22,11 @@ export function buildImagePrompt(
   layers.push(userPrompt);
 
   // Layer 2 — visual modifiers
-  if (brand.photography_style) {
-    layers.push(`Visual style: ${brand.photography_style} photography`);
+  if (brand.imagery_style) {
+    layers.push(`Imagery style: ${brand.imagery_style}`);
+  }
+  if (brand.photography_style && (!brand.imagery_style || brand.imagery_style === 'Photography')) {
+    layers.push(`Photography style: ${brand.photography_style}`);
   }
   if (brand.color_mood) {
     layers.push(`Color treatment: ${brand.color_mood}`);
