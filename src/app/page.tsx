@@ -1,63 +1,47 @@
-import Image from "next/image";
+import React from 'react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
+import { Button } from '@/components/ui/button';
+import { Sparkles } from 'lucide-react';
 
-export default function Home() {
+export const metadata = {
+  title: 'Lumavi | AI Branded Creative Platform',
+  description: 'Generate on-brand marketing creatives with deep Brand Intelligence.',
+};
+
+export default async function Home() {
+  const authData = await auth();
+  const userId = authData.userId;
+
+  // If already logged in, redirect to dashboard (which handles workspace checks)
+  if (userId) {
+    redirect('/dashboard');
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex flex-col min-h-screen items-center justify-center bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900 p-6">
+      <main className="w-full max-w-lg text-center space-y-8 bg-white dark:bg-neutral-900 p-8 sm:p-12 rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-xl">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-violet-50 text-violet-700 dark:bg-violet-950/30 dark:text-violet-400 border border-violet-100 mx-auto">
+            <Sparkles className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+            Introducing Lumavi
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
+            Lumavi
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-sm text-neutral-500 max-w-sm mx-auto leading-relaxed">
+            Generate on-brand marketing content, visuals, and copy using deep Brand Intelligence prompt engines.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+          <Button asChild className="h-11 px-8 bg-violet-600 hover:bg-violet-700 text-white font-medium shadow-md transition-all">
+            <Link href="/register">Create Account</Link>
+          </Button>
+          <Button asChild variant="outline" className="h-11 px-8 font-medium transition-all">
+            <Link href="/login">Sign In</Link>
+          </Button>
         </div>
       </main>
     </div>
