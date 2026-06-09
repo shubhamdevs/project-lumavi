@@ -17,7 +17,15 @@ export default function OnboardingWizard() {
     step: 1,
     org: { name: '', industry: '', useCase: '' },
     workspace: { name: '', description: '' },
-    brand: { primaryColor: '', secondaryColor: '', fontDisplay: '', fontBody: '', tone: '' },
+    brand: {
+      primaryColor: '',
+      secondaryColor: '',
+      fontDisplay: '',
+      fontBody: '',
+      tone: '',
+      photographyStyle: '',
+      brandIsNot: '',
+    },
     invites: [] as string[],
   });
 

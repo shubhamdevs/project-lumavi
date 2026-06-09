@@ -4,6 +4,14 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import {
+  IconNews,
+  IconCamera,
+  IconPackage,
+  IconSparkles,
+  IconBrush,
+  IconLayersIntersect,
+} from '@tabler/icons-react';
 
 interface StepBrandProps {
   data: {
@@ -13,6 +21,8 @@ interface StepBrandProps {
       fontDisplay: string;
       fontBody: string;
       tone: string;
+      photographyStyle: string;
+      brandIsNot: string;
     };
   };
   updateData: (updater: (prev: any) => any) => void;
@@ -27,6 +37,15 @@ export default function StepBrand({
   onBack,
 }: StepBrandProps) {
   const tones = ['Professional', 'Playful', 'Bold', 'Elegant', 'Friendly'];
+
+  const photographyStyles = [
+    { id: 'Editorial', label: 'Editorial', desc: 'Clean, minimal, lots of white space', icon: IconNews },
+    { id: 'Lifestyle', label: 'Lifestyle', desc: 'Real people, real moments, warm and candid', icon: IconCamera },
+    { id: 'Product', label: 'Product', desc: 'Sharp focus on the product, studio or clean background', icon: IconPackage },
+    { id: 'Abstract', label: 'Abstract', desc: 'Conceptual, artistic, mood-driven visuals', icon: IconSparkles },
+    { id: 'Illustrated', label: 'Illustrated', desc: 'Graphic, drawn, or design-forward imagery', icon: IconBrush },
+    { id: 'Mixed', label: 'Mixed', desc: 'Combination of styles depending on campaign', icon: IconLayersIntersect },
+  ];
 
   const handleColorChange = (key: 'primaryColor' | 'secondaryColor', value: string) => {
     updateData((prev) => ({
@@ -43,7 +62,6 @@ export default function StepBrand({
     onNext();
   };
 
-  // Helper to ensure color has '#' prefix for the input[type=color]
   const sanitizeColorForPicker = (color: string, fallback: string) => {
     if (/^#[0-9A-F]{6}$/i.test(color)) {
       return color;
@@ -61,7 +79,7 @@ export default function StepBrand({
           <button
             type="button"
             onClick={onNext}
-            className="text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+            className="text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors cursor-pointer"
           >
             Skip for now
           </button>
@@ -187,6 +205,69 @@ export default function StepBrand({
               </label>
             ))}
           </RadioGroup>
+        </div>
+
+        {/* Photography Style Grid */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            What best describes your visual style?
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {photographyStyles.map((style) => {
+              const IconComponent = style.icon;
+              const isSelected = data.brand.photographyStyle === style.id;
+              return (
+                <button
+                  type="button"
+                  key={style.id}
+                  onClick={() =>
+                    updateData((prev) => ({
+                      ...prev,
+                      brand: { ...prev.brand, photographyStyle: style.id },
+                    }))
+                  }
+                  className={`flex items-start gap-3 p-3 text-left rounded-xl border transition-all cursor-pointer ${
+                    isSelected
+                      ? 'border-violet-600 bg-violet-50/50 dark:bg-violet-950/20'
+                      : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900'
+                  }`}
+                >
+                  <div className={`p-2 rounded-lg ${isSelected ? 'bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300' : 'bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400'}`}>
+                    <IconComponent className="w-5 h-5 flex-shrink-0" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="font-semibold text-sm text-neutral-800 dark:text-neutral-200">
+                      {style.label}
+                    </span>
+                    <p className="text-xs text-neutral-500 leading-tight">
+                      {style.desc}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Brand is NOT Field */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            Your brand is never...
+          </label>
+          <Input
+            placeholder="e.g. corporate, stock photo, overly formal, cluttered"
+            value={data.brand.brandIsNot}
+            onChange={(e) =>
+              updateData((prev) => ({
+                ...prev,
+                brand: { ...prev.brand, brandIsNot: e.target.value },
+              }))
+            }
+            className="transition-all focus:ring-2 focus:ring-violet-500"
+          />
+          <p className="text-[11px] text-neutral-500">
+            This helps the AI avoid generating off-brand content.
+          </p>
         </div>
       </div>
 

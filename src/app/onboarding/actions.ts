@@ -7,7 +7,15 @@ import { createServiceRoleClient } from '@/lib/supabase/service';
 export interface OnboardingData {
   org: { name: string; industry: string; useCase: string };
   workspace: { name: string; description: string };
-  brand: { primaryColor: string; secondaryColor: string; fontDisplay: string; fontBody: string; tone: string };
+  brand: {
+    primaryColor: string;
+    secondaryColor: string;
+    fontDisplay: string;
+    fontBody: string;
+    tone: string;
+    photographyStyle: string;
+    brandIsNot: string;
+  };
   invites: string[];
 }
 
@@ -115,6 +123,8 @@ export async function saveOnboardingData(data: OnboardingData) {
         colors: { primary: data.brand.primaryColor, secondary: data.brand.secondaryColor },
         typography: { display: data.brand.fontDisplay, body: data.brand.fontBody },
         tone: { archetype: data.brand.tone },
+        photography_style: data.brand.photographyStyle || null,
+        brand_is_not: data.brand.brandIsNot || null,
       });
 
     if (brandError) {
