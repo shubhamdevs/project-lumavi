@@ -38,7 +38,7 @@ gcloud artifacts repositories create lumavi \
   --repository-format=docker \
   --location="${REGION}" \
   --project="${PROJECT_ID}" \
-  --description="Lumavi container images"
+  --description="Lumavi container images" || echo "Warning: Could not verify registry creation. Assuming it exists."
 
 # ── Backend ───────────────────────────────────────────────────────────────────
 echo "==> Building backend image..."
