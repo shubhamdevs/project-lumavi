@@ -146,7 +146,7 @@ gcloud run services update "${BACKEND_SERVICE}" \
   --platform=managed \
   --region="${REGION}" \
   --project="${PROJECT_ID}" \
-  --set-env-vars="FRONTEND_URL=${ALLOWED_ORIGINS}"
+  --set-env-vars="^|^FRONTEND_URL=${ALLOWED_ORIGINS}"
 
 echo ""
 echo "============================================================"
