@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp/
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -11,14 +11,26 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
 
 # misc
 .DS_Store
@@ -41,7 +53,8 @@ yarn-error.log*
 next-env.d.ts
 
 # clerk configuration (can include secrets)
-/.clerk/
+.clerk/
 
 # Google Cloud credentials (sensitive)
 lumavi-set1-e0b876b2a63c.json
+

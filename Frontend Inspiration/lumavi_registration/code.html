@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create your Lumavi account</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Syne:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-background": "#121c28",
+                        "surface-container-high": "#dfe9fa",
+                        "background": "#f8f9ff",
+                        "surface-variant": "#d9e3f4",
+                        "tertiary": "#572c00",
+                        "primary-container": "#3b2fcf",
+                        "primary-fixed": "#e2dfff",
+                        "surface": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "primary": "#2100b7",
+                        "on-primary-fixed-variant": "#3425c9",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed": "#2f1500",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-surface": "#121c28",
+                        "on-primary-fixed": "#0e0069",
+                        "tertiary-container": "#783f00",
+                        "error": "#ba1a1a",
+                        "outline": "#777587",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdcc3",
+                        "secondary-container": "#86f2e4",
+                        "surface-container-highest": "#d9e3f4",
+                        "surface-dim": "#d1dbec",
+                        "secondary": "#006a61",
+                        "on-surface-variant": "#464555",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#bab8ff",
+                        "surface-container-low": "#eef4ff",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "inverse-primary": "#c3c0ff",
+                        "surface-container": "#e5eeff",
+                        "surface-tint": "#4d45e0",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "on-tertiary-container": "#ffad68",
+                        "secondary-fixed": "#89f5e7",
+                        "inverse-surface": "#27313e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#006f66",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#00201d",
+                        "outline-variant": "#c7c4d8",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit-1": "4px",
+                        "unit-6": "24px",
+                        "unit-16": "64px",
+                        "unit-4": "16px",
+                        "unit-8": "32px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit-12": "48px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "unit-2": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-h2": ["Syne"],
+                        "headline-h1-mobile": ["Syne"],
+                        "body-sm": ["Inter"],
+                        "display-hero": ["Syne"],
+                        "headline-h1": ["Syne"],
+                        "label-mono": ["JetBrains Mono"],
+                        "button-text": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-h2": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-h1-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-hero": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-h1": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "button-text": ["15px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest min-h-screen flex font-body-md text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Left Panel: Brand & Value Proposition -->
+<div class="hidden lg:flex w-1/2 bg-on-primary-fixed flex-col justify-between p-unit-16 relative overflow-hidden">
+<!-- Subtle background atmospheric pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.4) 1px, transparent 0); background-size: 32px 32px;"></div>
+<div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-container rounded-full blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+<div class="relative z-10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-3xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">generating_tokens</span>
+<span class="font-headline-h2 text-headline-h2 text-on-primary">Lumavi</span>
+</div>
+<div class="relative z-10 space-y-unit-8 max-w-lg">
+<h1 class="font-headline-h1 text-headline-h1 text-on-primary text-balance">
+                "Lumen meets Kavi..."
+            </h1>
+<p class="font-body-lg text-body-lg text-primary-fixed-dim leading-relaxed">
+                The ultimate AI content marketing platform. Turn complex briefs into ready-to-publish campaigns with high-contrast precision.
+            </p>
+<ul class="space-y-unit-4 mt-unit-8">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed mt-1" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<strong class="block font-button-text text-button-text text-on-primary">Generate campaigns in seconds</strong>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">From ideation to execution at the speed of thought.</span>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed mt-1" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<strong class="block font-button-text text-button-text text-on-primary">Brand voice alignment</strong>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">AI models trained on your specific stylistic identity.</span>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed mt-1" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div>
+<strong class="block font-button-text text-button-text text-on-primary">Cross-platform optimization</strong>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim">Automatically format content for every digital channel.</span>
+</div>
+</li>
+</ul>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 text-primary-fixed-dim">
+<div class="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+</div>
+<div class="font-body-sm text-body-sm">
+                    Trusted by forward-thinking marketing teams.
+                </div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Registration Form -->
+<div class="w-full lg:w-1/2 flex items-center justify-center p-unit-8 sm:p-unit-16 bg-surface-container-lowest">
+<div class="w-full max-w-[420px]">
+<!-- Mobile Logo (visible only on small screens) -->
+<div class="flex lg:hidden items-center gap-2 mb-unit-12">
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">generating_tokens</span>
+<span class="font-headline-h2 text-headline-h2 text-on-surface">Lumavi</span>
+</div>
+<div class="mb-unit-8">
+<h2 class="font-headline-h2 text-headline-h2 text-on-background mb-unit-2">Create your account</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Start building high-performance campaigns today.</p>
+</div>
+<!-- Google OAuth Button -->
+<button class="w-full flex items-center justify-center gap-3 bg-surface-container-lowest border border-outline-variant rounded-xl py-3 px-4 font-button-text text-button-text text-on-surface hover:bg-surface-container-low transition-colors duration-200 group">
+<svg class="w-5 h-5 group-hover:scale-105 transition-transform" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.67 15.63 16.89 16.79 15.73 17.57V20.34H19.29C21.37 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"></path>
+<path d="M12 23C14.97 23 17.46 22.02 19.29 20.34L15.73 17.57C14.74 18.23 13.48 18.63 12 18.63C9.13 18.63 6.7 16.69 5.82 14.12H2.15V16.96C3.96 20.55 7.69 23 12 23Z" fill="#34A853"></path>
+<path d="M5.82 14.12C5.59 13.46 5.46 12.75 5.46 12C5.46 11.25 5.59 10.54 5.82 9.88V7.04H2.15C1.4 8.54 0.96 10.22 0.96 12C0.96 13.78 1.4 15.46 2.15 16.96L5.82 14.12Z" fill="#FBBC05"></path>
+<path d="M12 5.38C13.62 5.38 15.06 5.94 16.21 7.02L19.37 3.86C17.45 2.07 14.97 1 12 1C7.69 1 3.96 3.45 2.15 7.04L5.82 9.88C6.7 7.31 9.13 5.38 12 5.38Z" fill="#EA4335"></path>
+</svg>
+                Continue with Google
+            </button>
+<!-- Divider -->
+<div class="flex items-center my-unit-6">
+<div class="flex-grow border-t border-outline-variant/50"></div>
+<span class="px-3 font-label-mono text-label-mono text-outline uppercase tracking-widest">Or continue with email</span>
+<div class="flex-grow border-t border-outline-variant/50"></div>
+</div>
+<!-- Form -->
+<form class="space-y-unit-4" onsubmit="event.preventDefault();">
+<div class="space-y-1">
+<label class="font-button-text text-button-text text-on-surface" for="name">Full Name</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">person</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface placeholder:text-outline/70 focus:border-primary focus:ring-2 focus:ring-primary-fixed transition-all outline-none" id="name" placeholder="Kavi Lumen" required="" type="text"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-button-text text-button-text text-on-surface" for="email">Work Email</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">mail</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface placeholder:text-outline/70 focus:border-primary focus:ring-2 focus:ring-primary-fixed transition-all outline-none" id="email" placeholder="kavi@lumavi.ai" required="" type="email"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="font-button-text text-button-text text-on-surface" for="password">Password</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface placeholder:text-outline/70 focus:border-primary focus:ring-2 focus:ring-primary-fixed transition-all outline-none" id="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<div class="pt-unit-2">
+<button class="w-full bg-primary text-on-primary rounded-xl py-3 px-4 font-button-text text-button-text flex items-center justify-center gap-2 hover:bg-on-primary-fixed-variant hover:shadow-[0_0_0_4px_rgba(59,47,207,0.15)] transition-all duration-300" type="submit">
+                        Create my account
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</form>
+<div class="mt-unit-8 text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Already have an account? 
+                    <a class="text-primary font-medium hover:text-primary-container transition-colors underline-offset-2 hover:underline" href="#">Log in</a>
+</p>
+</div>
+<div class="mt-unit-12 pt-unit-6 border-t border-outline-variant/30 text-center">
+<p class="font-body-sm text-body-sm text-outline">
+                    By registering, you agree to our <a class="text-on-surface hover:text-primary transition-colors" href="#">Terms of Service</a> and <a class="text-on-surface hover:text-primary transition-colors" href="#">Privacy Policy</a>.
+                </p>
+</div>
+</div>
+</div>
+</body></html>

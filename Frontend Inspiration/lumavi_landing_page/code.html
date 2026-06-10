@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumavi | Your brand. Every asset. Always.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Syne:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 0 4px rgba(59, 47, 207, 0.15);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-background": "#121c28",
+                        "surface-container-high": "#dfe9fa",
+                        "background": "#f8f9ff",
+                        "surface-variant": "#d9e3f4",
+                        "tertiary": "#572c00",
+                        "primary-container": "#3b2fcf",
+                        "primary-fixed": "#e2dfff",
+                        "surface": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "primary": "#2100b7",
+                        "on-primary-fixed-variant": "#3425c9",
+                        "on-secondary-fixed-variant": "#005049",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed": "#2f1500",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-surface": "#121c28",
+                        "on-primary-fixed": "#0e0069",
+                        "tertiary-container": "#783f00",
+                        "error": "#ba1a1a",
+                        "outline": "#777587",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdcc3",
+                        "secondary-container": "#86f2e4",
+                        "surface-container-highest": "#d9e3f4",
+                        "surface-dim": "#d1dbec",
+                        "secondary": "#006a61",
+                        "on-surface-variant": "#464555",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#bab8ff",
+                        "surface-container-low": "#eef4ff",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "inverse-primary": "#c3c0ff",
+                        "surface-container": "#e5eeff",
+                        "surface-tint": "#4d45e0",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "on-tertiary-container": "#ffad68",
+                        "secondary-fixed": "#89f5e7",
+                        "inverse-surface": "#27313e",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#006f66",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#00201d",
+                        "outline-variant": "#c7c4d8",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit-1": "4px",
+                        "unit-6": "24px",
+                        "unit-16": "64px",
+                        "unit-4": "16px",
+                        "unit-8": "32px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit-12": "48px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "unit-2": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-h2": ["Syne"],
+                        "headline-h1-mobile": ["Syne"],
+                        "body-sm": ["Inter"],
+                        "display-hero": ["Syne"],
+                        "headline-h1": ["Syne"],
+                        "label-mono": ["JetBrains Mono"],
+                        "button-text": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-h2": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-h1-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-hero": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-h1": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "button-text": ["15px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/30 shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center h-20 px-gutter max-w-container-max mx-auto">
+<a class="font-headline-h2 text-headline-h2 font-bold text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity" href="#">
+                Lumavi
+            </a>
+<div class="hidden md:flex items-center gap-unit-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#platform">Platform</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#solutions">Solutions</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#resources">Resources</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#pricing">Pricing</a>
+</div>
+<div class="flex items-center gap-unit-4">
+<a class="hidden md:inline-flex text-primary font-button-text text-button-text hover:text-primary-fixed transition-colors" href="#">Log In</a>
+<a class="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-button-text text-button-text px-6 py-2.5 rounded-lg glow-hover transition-all duration-300 active:scale-95 hover:-translate-y-0.5" href="#">
+                    Get Started
+                </a>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center justify-center overflow-hidden py-24 px-gutter">
+<div class="absolute inset-0 pointer-events-none opacity-20 dark:opacity-30">
+<!-- STITCH_SVG_START:ANIMATION_2 class="w-full h-full object-cover" --><div class="w-full h-full object-cover" id="animated-svg-ANIMATION_2" style="display:block;"><svg fill="none" height="200" viewbox="0 0 200 200" width="200" xmlns="http://www.w3.org/2000/svg">
+<!-- Logomark Center -->
+<circle cx="100" cy="100" fill="#3B2FCF" r="12"></circle>
+<!-- Pulse Rings -->
+<circle cx="100" cy="100" opacity="0" r="12" stroke="#3B2FCF" stroke-width="2">
+<animate attributename="r" dur="1.8s" from="12" repeatcount="indefinite" to="80"></animate>
+<animate attributename="opacity" dur="1.8s" repeatcount="indefinite" values="0.4;0"></animate>
+<animate attributename="stroke-opacity" dur="1.8s" repeatcount="indefinite" values="0.4;0"></animate>
+</circle>
+<circle cx="100" cy="100" opacity="0" r="12" stroke="#3B2FCF" stroke-width="2">
+<animate attributename="r" begin="0.3s" dur="1.8s" from="12" repeatcount="indefinite" to="80"></animate>
+<animate attributename="opacity" begin="0.3s" dur="1.8s" repeatcount="indefinite" values="0.4;0"></animate>
+<animate attributename="stroke-opacity" begin="0.3s" dur="1.8s" repeatcount="indefinite" values="0.4;0"></animate>
+</circle>
+<circle cx="100" cy="100" opacity="0" r="12" stroke="#3B2FCF" stroke-width="2">
+<animate attributename="r" begin="0.6s" dur="1.8s" from="12" repeatcount="indefinite" to="80"></animate>
+<animate attributename="opacity" begin="0.6s" dur="1.8s" repeatcount="indefinite" values="0.4;0"></animate>
+<animate attributename="stroke-opacity" begin="0.6s" dur="1.8s" repeatcount="indefinite" values="0.4;0"></animate>
+</circle>
+</svg></div><!-- STITCH_SVG_END:ANIMATION_2 -->
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<div class="relative z-10 max-w-4xl mx-auto text-center">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container border border-outline-variant/30 mb-8">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Lumavi AI Engine 2.0 is live</span>
+</div>
+<h1 class="font-display-hero text-display-hero text-on-background mb-6 leading-tight tracking-tight">
+                    Your brand. Every asset.<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Always.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Generate on-brand images and videos in seconds. Lumavi learns your unique visual identity to create production-ready assets that never miss the mark.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-button-text text-button-text px-8 py-4 rounded-xl glow-hover transition-all duration-300 active:scale-95 w-full sm:w-auto hover:-translate-y-1 shadow-lg shadow-primary-container/20" href="#">
+                        Generate your first image — free
+                        <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center bg-surface text-on-surface border border-outline-variant/50 font-button-text text-button-text px-8 py-4 rounded-xl hover:bg-surface-container-low transition-all duration-300 active:scale-95 w-full sm:w-auto" href="#">
+<span class="material-symbols-outlined mr-2 text-[20px]">play_circle</span>
+                        See how it works
+                    </a>
+</div>
+</div>
+</section>
+<!-- Split Screen Comparison -->
+<section class="py-24 px-gutter bg-surface-container-lowest border-y border-outline-variant/20">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline-h1 text-headline-h1-mobile md:text-headline-h1 text-on-background mb-4">The Lumavi Difference</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Stop settling for generic stock and hallucinated branding.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-8">
+<!-- Without Lumavi -->
+<div class="rounded-2xl border border-outline-variant/30 bg-surface overflow-hidden group">
+<div class="p-4 border-b border-outline-variant/30 bg-surface-container-low flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Without Lumavi</span>
+<span class="material-symbols-outlined text-error">close</span>
+</div>
+<div class="p-8 aspect-video relative flex items-center justify-center bg-surface-container-highest/30">
+<img alt="Generic generated image" class="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-luminosity grayscale" data-alt="A generic, uninspired AI generated image of a corporate office setting, lacking any distinctive brand colors or style. The lighting is flat and artificial, typical of early generation models. The scene feels disjointed and lacks a cohesive aesthetic, presented in a desaturated, slightly blurred manner to emphasize its low quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANEUMt7M-9RD-p9IRcUpRWhdJCn3Ts_34zxjyIwVYjGTgGPfhlNugH6z907hDGwEMXvznUlqbs9XhFRSpp3OnV4qoXKKP2irJJfAv9aa8M7Be6dF4ozMattNGmzTNBhdr_dUMAf1fHmRGbqe6pqA-DQvAyXX5vlNwyS9mRx8xCXF50Iux5xnssy_up1FpBQjZ6jOs2GuUVT4k8L-L1vDE_cNpVw_jbm_CwCaKQjfr0xx2PQbbX8TlQNsgXTRz24s6LwO3SGsDahhI"/>
+<div class="relative z-10 bg-error-container/90 backdrop-blur text-on-error-container px-4 py-2 rounded-lg font-body-sm text-body-sm font-medium shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+                                Inconsistent style &amp; off-brand colors
+                            </div>
+</div>
+</div>
+<!-- With Lumavi -->
+<div class="rounded-2xl border-2 border-primary-container bg-surface overflow-hidden relative shadow-xl shadow-primary-container/10 group transform transition-transform hover:-translate-y-1">
+<div class="p-4 border-b border-primary-container/20 bg-primary-fixed/30 flex items-center justify-between">
+<span class="font-label-mono text-label-mono text-primary font-bold">With Lumavi</span>
+<span class="material-symbols-outlined text-secondary-container">check_circle</span>
+</div>
+<div class="p-8 aspect-video relative flex items-center justify-center">
+<img alt="On-brand generated image" class="absolute inset-0 w-full h-full object-cover" data-alt="A high-quality, professional AI generated image of a modern, sleek tech workspace that perfectly incorporates a vibrant indigo and teal brand color palette. The lighting is crisp, dynamic, and cinematic, creating a highly polished and engaging scene. The aesthetic is modern corporate, aligning perfectly with a premium tech brand's visual identity, featuring sharp details and rich contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXPXBqfxFS32wfhKTgWJT8kxNZXOvE7Py3LAUceeK1Ygnfdx93_rpR63CB6SzkKwc0rANmynvIGW6KgNak23ur-zr4Vf8pEL6vravMjsSBnV8NpTJqfebUAkLRwiOddaDJIEP8k-qi3WFbYp1hyChe2yM1inBvwlP7S1vOBhGMer-twagx3Akr4RNPWFJp89H0q06xMonfUy8p-ruJ6GrMMJ37hDok0ZDNruBsG9oPd8BNY97x7HTItKHftw7aYjEi-vkhQs_UxD8"/>
+<div class="absolute bottom-4 right-4 bg-surface/90 backdrop-blur text-on-surface px-3 py-1.5 rounded-lg font-body-sm text-body-sm shadow flex items-center gap-2 border border-outline-variant/30">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+                                Brand Model: Active
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Problem Section -->
+<section class="py-32 px-gutter bg-surface">
+<div class="max-w-container-max mx-auto">
+<div class="max-w-3xl mb-16">
+<h2 class="font-headline-h1 text-headline-h1-mobile md:text-headline-h1 text-on-background mb-6">Marketing teams move fast.<br/>Their tools don't.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Traditional asset creation creates bottlenecks. Lumavi removes them, scaling your brand's visual output without sacrificing quality.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Speed -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center mb-6 text-primary-container">
+<span class="material-symbols-outlined text-[28px]">bolt</span>
+</div>
+<h3 class="font-headline-h2 text-[24px] text-on-background mb-3">Speed</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">From brief to final asset in seconds, not weeks. Accelerate your campaign launches and iterative testing.</p>
+</div>
+<!-- Cost -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center mb-6 text-secondary">
+<span class="material-symbols-outlined text-[28px]">payments</span>
+</div>
+<h3 class="font-headline-h2 text-[24px] text-on-background mb-3">Cost</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Reduce reliance on expensive agency retainers and stock subscriptions. Produce infinite variations at a fraction of the cost.</p>
+</div>
+<!-- Consistency -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center mb-6 text-tertiary-container">
+<span class="material-symbols-outlined text-[28px]">architecture</span>
+</div>
+<h3 class="font-headline-h2 text-[24px] text-on-background mb-3">Consistency</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Lock in your visual identity. Every generated asset adheres strictly to your brand guidelines, typography, and color palette.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Platform Overview -->
+<section class="py-32 px-gutter bg-[#0a0f2c] text-white overflow-hidden relative" id="platform">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-container/20 to-transparent pointer-events-none"></div>
+<div class="max-w-container-max mx-auto relative z-10">
+<div class="text-center mb-20">
+<span class="font-label-mono text-label-mono text-secondary-fixed mb-4 block">PLATFORM OVERVIEW</span>
+<h2 class="font-headline-h1 text-headline-h1-mobile md:text-headline-h1 mb-6">The complete creative engine.</h2>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Brand Engine -->
+<div class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">tune</span>
+</div>
+<h3 class="font-headline-h2 text-[20px] mb-2">Brand Engine</h3>
+<p class="font-body-sm text-body-sm text-white/70">Train our AI on your exact brand guidelines, logos, and preferred aesthetic styles.</p>
+</div>
+<!-- Image Gen -->
+<div class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/20 flex items-center justify-center mb-6 text-secondary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">image</span>
+</div>
+<h3 class="font-headline-h2 text-[20px] mb-2">Image Gen</h3>
+<p class="font-body-sm text-body-sm text-white/70">Produce high-fidelity, photorealistic or stylized imagery tailored to your campaigns.</p>
+</div>
+<!-- Video Gen -->
+<div class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed/20 flex items-center justify-center mb-6 text-tertiary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<h3 class="font-headline-h2 text-[20px] mb-2">Video Gen</h3>
+<p class="font-body-sm text-body-sm text-white/70">Transform static assets or text prompts into dynamic, engaging short-form video content.</p>
+</div>
+<!-- Canvas Builder -->
+<div class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center mb-6 text-primary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">dashboard_customize</span>
+</div>
+<h3 class="font-headline-h2 text-[20px] mb-2">Canvas Builder</h3>
+<p class="font-body-sm text-body-sm text-white/70">An infinite workspace to ideate, composite, and refine your generated assets collaboratively.</p>
+</div>
+<!-- Gallery -->
+<div class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/20 flex items-center justify-center mb-6 text-secondary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">photo_library</span>
+</div>
+<h3 class="font-headline-h2 text-[20px] mb-2">Gallery</h3>
+<p class="font-body-sm text-body-sm text-white/70">A centralized, searchable repository for all your approved, brand-safe generated content.</p>
+</div>
+<!-- Publishing -->
+<div class="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors group">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed/20 flex items-center justify-center mb-6 text-tertiary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">send</span>
+</div>
+<h3 class="font-headline-h2 text-[20px] mb-2">Publishing</h3>
+<p class="font-body-sm text-body-sm text-white/70">Export directly to your social channels or CMS in the optimal formats and resolutions.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-32 px-gutter bg-surface" id="pricing">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-20">
+<h2 class="font-headline-h1 text-headline-h1-mobile md:text-headline-h1 text-on-background mb-4">Simple, transparent pricing.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Start for free, scale when you need to.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+<!-- Starter -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col">
+<h3 class="font-headline-h2 text-[24px] text-on-background mb-2">Starter</h3>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="font-display-hero text-[48px] leading-none text-on-background">Free</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-8 pb-8 border-b border-outline-variant/20 flex-grow">Perfect for individuals exploring AI generation.</p>
+<a class="w-full text-center py-3 px-4 rounded-xl font-button-text text-button-text border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors mb-6" href="#">Get Started</a>
+<ul class="space-y-4 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> 50 generations/month</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Basic image generation</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Standard resolution</li>
+</ul>
+</div>
+<!-- Professional -->
+<div class="p-8 rounded-2xl bg-surface border-2 border-primary-container relative shadow-xl shadow-primary-container/10 flex flex-col transform md:-translate-y-4">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-container text-on-primary-container px-4 py-1 rounded-full font-label-mono text-[10px] uppercase tracking-wider font-bold">Most Popular</div>
+<h3 class="font-headline-h2 text-[24px] text-on-background mb-2">Professional</h3>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="font-display-hero text-[48px] leading-none text-on-background">$29</span>
+<span class="font-body-sm text-on-surface-variant">/mo</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-8 pb-8 border-b border-outline-variant/20 flex-grow">For marketers needing consistent, on-brand assets.</p>
+<a class="w-full text-center py-3 px-4 rounded-xl font-button-text text-button-text bg-primary-container text-on-primary-container glow-hover transition-all duration-300 active:scale-95 mb-6" href="#">Start Free Trial</a>
+<ul class="space-y-4 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> Unlimited image generations</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> 1 Brand Model training</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> High-res exports</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> Basic video generation</li>
+</ul>
+</div>
+<!-- Agency -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col">
+<h3 class="font-headline-h2 text-[24px] text-on-background mb-2">Agency</h3>
+<div class="flex items-baseline gap-1 mb-6">
+<span class="font-display-hero text-[48px] leading-none text-on-background">$99</span>
+<span class="font-body-sm text-on-surface-variant">/mo</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-8 pb-8 border-b border-outline-variant/20 flex-grow">For teams managing multiple brands and high volumes.</p>
+<a class="w-full text-center py-3 px-4 rounded-xl font-button-text text-button-text border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors mb-6" href="#">Contact Sales</a>
+<ul class="space-y-4 font-body-sm text-body-sm text-on-surface">
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Everything in Professional</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Unlimited Brand Models</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Advanced video generation</li>
+<li class="flex items-start gap-3"><span class="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Team collaboration tools</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-inverse-surface w-full py-unit-12 border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-gutter max-w-container-max mx-auto gap-6">
+<div class="font-headline-h2 text-headline-h2 text-primary">
+                Lumavi
+            </div>
+<div class="flex flex-wrap justify-center gap-6 text-on-surface-variant font-body-sm text-body-sm">
+<a class="hover:text-primary underline transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="hover:text-primary underline transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="hover:text-primary underline transition-all opacity-80 hover:opacity-100" href="#">Cookie Policy</a>
+</div>
+<div class="text-secondary dark:text-secondary-fixed font-body-sm text-body-sm">
+                © 2024 Lumavi AI. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
