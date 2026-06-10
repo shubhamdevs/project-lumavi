@@ -196,15 +196,27 @@ See `runner.md` for step-by-step commands.
 
 ---
 
-## Production Deployment
+## Production & Staging Deployment
 
-Both services deploy to Cloud Run via `deploy.sh`:
+The services deploy autonomously to Google Cloud Run via GitHub Actions, or can be triggered manually using `deploy.sh`.
 
-1. Backend image built → pushed to Artifact Registry → deployed to `lumavi-backend` Cloud Run service
-2. Backend Cloud Run URL captured
-3. Frontend image built with `NEXT_PUBLIC_BACKEND_URL` baked in at build time
-4. Frontend deployed to `lumavi-frontend` Cloud Run service
-5. Backend updated with `FRONTEND_URL` for CORS
+### 1. Environments & Automated CI/CD
+Environments are mapped directly to git branches:
+*   **Staging Environment** (`staging` branch): Deploys services `lumavi-backend-staging` and `lumavi-frontend-staging`.
+*   **Production Environment** (`main` branch): Deploys services `lumavi-backend-prod` and `lumavi-frontend-prod` (connected to custom domain `https://lumavi.techtovium.ai`).
+
+The GitHub Actions pipeline (`.github/workflows/deploy.yml`) is triggered on pushes to either branch and performs the deployment using a service account credentials JSON.
+
+### 2. Deployment Sequence (`deploy.sh`)
+When running `deploy.sh [staging|prod]`:
+1.  Backend container built and pushed to Artifact Registry (`backend-staging` or `backend-prod`).
+2.  Backend service deployed to Cloud Run, automatically capturing the backend service URL.
+3.  Frontend container built with the backend URL baked in at build time (`NEXT_PUBLIC_BACKEND_URL`).
+4.  Frontend service deployed to Cloud Run, capturing the frontend service URL.
+5.  Backend service updated via `gcloud` to inject `FRONTEND_URL` for CORS.
+
+> [!IMPORTANT]
+> **CORS Delimiter Handling:** To support multiple allowed origins in production (e.g. both the raw Cloud Run URL and the custom domain `lumavi.techtovium.ai`), `deploy.sh` passes a comma-separated list of origins. Because `gcloud` splits arguments at commas by default, it uses the custom delimiter syntax `^|^FRONTEND_URL=${ALLOWED_ORIGINS}` to avoid syntax errors.
 
 Cloud SQL connection on Cloud Run uses the Cloud SQL Python Connector with `IPTypes.PUBLIC` — the connector handles encrypted IAM-authenticated tunneling automatically without needing `--add-cloudsql-instances`.
 
