@@ -50,7 +50,7 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
     if (isGenerating && (jobStatus === 'pending' || jobStatus === 'processing')) {
       interval = setInterval(() => setActiveStep((p) => (p < 3 ? p + 1 : p)), 4000);
     } else {
-      setActiveStep(0);
+      setTimeout(() => setActiveStep(0), 0);
     }
     return () => clearInterval(interval);
   }, [isGenerating, jobStatus]);
