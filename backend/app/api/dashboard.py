@@ -17,40 +17,35 @@ async def get_dashboard_summary(
 ):
     ws_uuid = uuid.UUID(workspace_id)
 
-    member_result = await db.execute(
-        select(WorkspaceMember).where(
-            WorkspaceMember.user_id == user_id,
-            WorkspaceMember.workspace_id == ws_uuid,
-            WorkspaceMember.status == "active",
-        )
-    )
-    if not member_result.scalar_one_or_none():
-        raise HTTPException(status_code=403, detail="Not a workspace member")
+    # Subqueries to fetch associated data in one single database roundtrip
+    brand_sub = select(BrandGuidelines.completeness).where(BrandGuidelines.workspace_id == ws_uuid).limit(1).scalar_subquery()
+    member_count_sub = select(func.count()).where(WorkspaceMember.workspace_id == ws_uuid, WorkspaceMember.status == "active").scalar_subquery()
+    asset_count_sub = select(func.count()).where(Asset.workspace_id == ws_uuid, Asset.deleted_at.is_(None)).scalar_subquery()
+    is_member_sub = select(1).where(WorkspaceMember.workspace_id == ws_uuid, WorkspaceMember.user_id == user_id, WorkspaceMember.status == "active").exists()
 
-    ws_result = await db.execute(
-        select(Workspace, Organization)
+    # Main query returning workspace, organization and computed aggregates
+    query = (
+        select(
+            Workspace,
+            Organization,
+            brand_sub.label("brand_completeness"),
+            member_count_sub.label("member_count"),
+            asset_count_sub.label("asset_count"),
+            is_member_sub.label("is_member")
+        )
         .join(Organization, Workspace.org_id == Organization.id)
         .where(Workspace.id == ws_uuid)
     )
-    ws_row = ws_result.first()
-    if not ws_row:
+
+    result = await db.execute(query)
+    row = result.first()
+    if not row:
         raise HTTPException(status_code=404, detail="Workspace not found")
-    workspace, org = ws_row
 
-    brand_result = await db.execute(
-        select(BrandGuidelines.completeness).where(BrandGuidelines.workspace_id == ws_uuid)
-    )
-    completeness = brand_result.scalar_one_or_none() or 0
+    workspace, org, completeness, member_count, asset_count, is_member = row
 
-    member_count_result = await db.execute(
-        select(func.count()).where(WorkspaceMember.workspace_id == ws_uuid, WorkspaceMember.status == "active")
-    )
-    member_count = member_count_result.scalar_one()
-
-    asset_count_result = await db.execute(
-        select(func.count()).where(Asset.workspace_id == ws_uuid, Asset.deleted_at.is_(None))
-    )
-    asset_count = asset_count_result.scalar_one()
+    if not is_member:
+        raise HTTPException(status_code=403, detail="Not a workspace member")
 
     recent_assets_result = await db.execute(
         select(Asset)
@@ -64,9 +59,9 @@ async def get_dashboard_summary(
         "workspace": {"id": str(workspace.id), "name": workspace.name},
         "organization": {"id": str(org.id), "name": org.name, "plan_tier": org.plan_tier},
         "credit_balance": org.credit_pool,
-        "brand_completeness": completeness,
-        "member_count": member_count,
-        "asset_count": asset_count,
+        "brand_completeness": completeness or 0,
+        "member_count": member_count or 0,
+        "asset_count": asset_count or 0,
         "recent_assets": [
             {
                 "id": str(a.id),
@@ -79,6 +74,7 @@ async def get_dashboard_summary(
             for a in recent_assets
         ],
     }
+
 
 
 @router.post("/{workspace_id}/top-up-credits")

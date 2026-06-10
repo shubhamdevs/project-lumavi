@@ -16,7 +16,7 @@ import {
   IconChevronUp, IconInfoCircle, IconArrowRight, IconRefresh,
 } from '@tabler/icons-react';
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+const BACKEND = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 interface ImageGeneratorClientProps {
   workspaceId: string;
