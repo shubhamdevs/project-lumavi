@@ -98,18 +98,27 @@ export function PlatformOverview() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, #06091a 0%, #0d1035 50%, #06091a 100%)",
+            "linear-gradient(180deg, var(--landing-bg) 0%, var(--landing-bg-subtle) 50%, var(--landing-bg) 100%)",
         }}
       />
       <div className="relative z-10 max-w-[1280px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-16" data-animate>
+        <div className="text-center mb-12" data-animate>
           <span className="font-[var(--font-jetbrains-mono)] text-xs tracking-[0.2em] text-[var(--landing-accent-primary)] uppercase block mb-4">
             The Creation Engine
           </span>
           <h2 className="font-[var(--font-syne)] text-4xl md:text-5xl font-bold text-[var(--landing-text-primary)] mb-4">
             Everything you need. Nothing you don&apos;t.
           </h2>
+        </div>
+
+        {/* Workflow Image */}
+        <div data-animate className="relative w-full max-w-4xl mx-auto mb-16 rounded-2xl overflow-hidden glass-card shadow-xl group">
+          <img 
+            src="/workflow-illustration.png" 
+            alt="Creative AI Workflow" 
+            className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          />
         </div>
 
         {/* Bento grid */}

@@ -4,7 +4,6 @@ import "../app/landing-animations.css";
 import { SmoothScrollProvider } from "./landing/SmoothScrollProvider";
 import { NavBar } from "./landing/NavBar";
 import { HeroSection } from "./landing/HeroSection";
-import { ComparisonSection } from "./landing/ComparisonSection";
 import { ProblemSection } from "./landing/ProblemSection";
 import { PlatformOverview } from "./landing/PlatformOverview";
 import { WorkflowSection } from "./landing/WorkflowSection";
@@ -26,7 +25,6 @@ export function LandingPageClient() {
         <NavBar />
         <main>
           <HeroSection />
-          <ComparisonSection />
           <ProblemSection />
           <PlatformOverview />
           <WorkflowSection />

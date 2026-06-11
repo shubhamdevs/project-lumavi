@@ -56,9 +56,22 @@ export function HeroSection() {
           y: 20,
           opacity: 0,
           scale: 0.95,
-          stagger: 0.1,
-          duration: 0.5,
+          stagger: 0.05,
+          duration: 0.4,
           ease: "back.out(1.7)",
+        },
+        "-=0.2"
+      );
+
+      // Hero Image Reveal
+      tl.from(
+        "[data-hero-image]",
+        {
+          y: 40,
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.8,
+          ease: "power3.out",
         },
         "-=0.2"
       );
@@ -202,6 +215,16 @@ export function HeroSection() {
             </svg>
             See how it works
           </a>
+        </div>
+
+        {/* Hero Image */}
+        <div data-hero-image className="relative w-full max-w-5xl mx-auto mt-8 mb-16 rounded-xl overflow-hidden glass-card-elevated border-2 border-[var(--landing-border-accent)] shadow-2xl group">
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--landing-bg)] via-transparent to-transparent opacity-50 z-10 pointer-events-none" />
+          <img 
+            src="/hero-mockup.png" 
+            alt="Lumavi AI Dashboard" 
+            className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+          />
         </div>
 
         {/* Floating stat chips */}

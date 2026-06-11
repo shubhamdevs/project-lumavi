@@ -64,10 +64,12 @@ export function NavBar() {
         <Link
           href="/"
           data-nav-item
-          className="font-[var(--font-syne)] text-2xl font-bold text-white hover:opacity-80 transition-opacity tracking-tight"
+          className="font-[var(--font-hahmlet)] text-2xl font-extrabold text-white tracking-tight flex items-center gap-1.5 hover:opacity-95 transition-opacity"
         >
-          Lumavi
-          <span className="text-[var(--landing-accent-primary)] ml-0.5">
+          <span className="bg-gradient-to-r from-white via-[#8ecae6] to-[#219ebc] text-transparent bg-clip-text">
+            Lumavi
+          </span>
+          <span className="text-[var(--landing-accent-primary)] text-xl">
             ✦
           </span>
         </Link>
@@ -91,7 +93,7 @@ export function NavBar() {
         <div className="hidden md:flex items-center gap-4" data-nav-item>
           <Link
             href="/login"
-            className="text-[var(--landing-text-secondary)] hover:text-white transition-colors text-[15px] font-medium"
+            className="btn-landing-secondary !py-2.5 !px-6 text-[15px]"
           >
             Log In
           </Link>

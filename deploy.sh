@@ -27,7 +27,7 @@ CLERK_PUBLISHABLE_KEY="${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-pk_test_YOUR_KEY}"
 CLERK_SECRET_KEY="${CLERK_SECRET_KEY:-sk_test_YOUR_KEY}"
 
 if [ "$ENV" == "prod" ]; then
-  CLERK_JWKS_URL="${CLERK_JWKS_URL:-https://clerk.lumavi.techtovium.ai/.well-known/jwks.json}"
+  CLERK_JWKS_URL="${CLERK_JWKS_URL:-https://brave-pony-81.clerk.accounts.dev/.well-known/jwks.json}"
 else
   CLERK_JWKS_URL="${CLERK_JWKS_URL:-https://brave-pony-81.clerk.accounts.dev/.well-known/jwks.json}"
 fi
