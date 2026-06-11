@@ -1,36 +1,164 @@
-import Link from 'next/link';
-import { auth } from '@clerk/nextjs/server';
+"use client";
 
-export async function NavBar() {
-  const { userId } = await auth();
+import Link from "next/link";
+import { useRef, useState, useEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsapConfig";
+
+const NAV_LINKS = [
+  { label: "Features", href: "#features" },
+  { label: "How It Works", href: "#workflow" },
+  { label: "Pricing", href: "#pricing" },
+];
+
+export function NavBar() {
+  const navRef = useRef<HTMLElement>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Scroll-aware glass effect
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // GSAP entrance animation
+  useGSAP(
+    () => {
+      gsap.from("[data-nav-item]", {
+        y: -20,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.6,
+        ease: "power2.out",
+        delay: 0.2,
+      });
+    },
+    { scope: navRef }
+  );
+
+  const handleAnchorClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      setMobileOpen(false);
+    }
+  };
 
   return (
-    <nav className="bg-surface/80 dark:bg-surface/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/30 shadow-sm transition-all duration-300">
-      <div className="flex justify-between items-center h-20 px-gutter max-w-container-max mx-auto">
-        <Link className="font-headline-h2 text-headline-h2 font-bold text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity" href="/">
+    <nav
+      ref={navRef}
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-[#06091a]/80 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/10"
+          : "bg-transparent border-b border-transparent"
+      }`}
+    >
+      <div className="flex justify-between items-center h-20 px-6 md:px-10 max-w-[1280px] mx-auto">
+        {/* Logo */}
+        <Link
+          href="/"
+          data-nav-item
+          className="font-[var(--font-syne)] text-2xl font-bold text-white hover:opacity-80 transition-opacity tracking-tight"
+        >
           Lumavi
+          <span className="text-[var(--landing-accent-primary)] ml-0.5">
+            ✦
+          </span>
         </Link>
-        <div className="hidden md:flex items-center gap-unit-6">
-          <Link className="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#platform">Platform</Link>
-          <Link className="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#solutions">Solutions</Link>
-          <Link className="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#resources">Resources</Link>
-          <Link className="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md font-medium" href="#pricing">Pricing</Link>
+
+        {/* Desktop nav links */}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              data-nav-item
+              onClick={(e) => handleAnchorClick(e, link.href)}
+              className="text-[var(--landing-text-secondary)] hover:text-white transition-colors text-[15px] font-medium"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
-        <div className="flex items-center gap-unit-4">
-          {userId ? (
-             <Link className="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-button-text text-button-text px-6 py-2.5 rounded-lg glow-hover transition-all duration-300 active:scale-95 hover:-translate-y-0.5" href="/dashboard">
-               Go to Dashboard
-             </Link>
-          ) : (
-            <>
-              <Link className="hidden md:inline-flex text-primary font-button-text text-button-text hover:text-primary-fixed transition-colors" href="/login">
-                Log In
-              </Link>
-              <Link className="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-button-text text-button-text px-6 py-2.5 rounded-lg glow-hover transition-all duration-300 active:scale-95 hover:-translate-y-0.5" href="/register">
-                Get Started
-              </Link>
-            </>
-          )}
+
+        {/* Desktop auth buttons */}
+        <div className="hidden md:flex items-center gap-4" data-nav-item>
+          <Link
+            href="/login"
+            className="text-[var(--landing-text-secondary)] hover:text-white transition-colors text-[15px] font-medium"
+          >
+            Log In
+          </Link>
+          <Link href="/register" className="btn-landing-primary !py-2.5 !px-6">
+            Get Started
+          </Link>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden flex flex-col gap-1.5 p-2 z-50"
+          aria-label="Toggle menu"
+        >
+          <span
+            className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+              mobileOpen ? "rotate-45 translate-y-2" : ""
+            }`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+              mobileOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+              mobileOpen ? "-rotate-45 -translate-y-2" : ""
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Mobile slide-in panel */}
+      <div
+        className={`md:hidden fixed inset-0 top-20 bg-[#06091a]/95 backdrop-blur-xl transition-all duration-400 ${
+          mobileOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-8 pt-16 px-6">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => handleAnchorClick(e, link.href)}
+              className="text-white text-xl font-medium hover:text-[var(--landing-accent-primary)] transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+          <div className="flex flex-col gap-4 w-full max-w-xs mt-4">
+            <Link
+              href="/login"
+              className="btn-landing-secondary w-full text-center"
+              onClick={() => setMobileOpen(false)}
+            >
+              Log In
+            </Link>
+            <Link
+              href="/register"
+              className="btn-landing-primary w-full text-center"
+              onClick={() => setMobileOpen(false)}
+            >
+              Get Started
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

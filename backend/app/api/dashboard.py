@@ -155,3 +155,35 @@ async def get_workspace_assets(
         ]
     }
 
+
+@router.delete("/{workspace_id}/assets/{asset_id}")
+async def delete_workspace_asset(
+    workspace_id: str,
+    asset_id: str,
+    user_id: str = Depends(get_current_user_id),
+    db: AsyncSession = Depends(get_db),
+):
+    ws_uuid = uuid.UUID(workspace_id)
+    asset_uuid = uuid.UUID(asset_id)
+
+    # Check if the user is a member of the workspace
+    member_result = await db.execute(
+        select(WorkspaceMember).where(
+            WorkspaceMember.user_id == user_id,
+            WorkspaceMember.workspace_id == ws_uuid,
+            WorkspaceMember.status == "active",
+        )
+    )
+    if not member_result.scalar_one_or_none():
+        raise HTTPException(status_code=403, detail="Not a workspace member")
+
+    # Soft delete the asset
+    asset = await db.get(Asset, asset_uuid)
+    if not asset or asset.workspace_id != ws_uuid:
+        raise HTTPException(status_code=404, detail="Asset not found")
+
+    asset.deleted_at = func.now()
+    await db.commit()
+    
+    return {"success": True}
+

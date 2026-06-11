@@ -1,0 +1,98 @@
+/* ================================================
+   Lumavi Landing Page — Animation Keyframes
+   ================================================ */
+
+/* Gentle floating animation for badges/chips */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Breathing glow effect for CTAs and highlighted cards */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(99, 84, 255, 0.15),
+      0 0 60px rgba(99, 84, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(99, 84, 255, 0.3),
+      0 0 80px rgba(99, 84, 255, 0.1);
+  }
+}
+
+/* Slow-moving gradient background */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Particle drift for ambient effects */
+@keyframes particle-drift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* Subtle shimmer for grid lines */
+@keyframes grid-shimmer {
+  0%,
+  100% {
+    opacity: 0.03;
+  }
+  50% {
+    opacity: 0.06;
+  }
+}
+
+/* Rotate for loading or decorative elements */
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scale-in reveal for cards */
+@keyframes scale-reveal {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Line draw animation for SVG strokes */
+@keyframes line-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

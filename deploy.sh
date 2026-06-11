@@ -25,7 +25,12 @@ FRONTEND_SERVICE="lumavi-frontend-${ENV}"
 # Clerk keys (set these or export them before running)
 CLERK_PUBLISHABLE_KEY="${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-pk_test_YOUR_KEY}"
 CLERK_SECRET_KEY="${CLERK_SECRET_KEY:-sk_test_YOUR_KEY}"
-CLERK_JWKS_URL="${CLERK_JWKS_URL:-https://brave-pony-81.clerk.accounts.dev/.well-known/jwks.json}"
+
+if [ "$ENV" == "prod" ]; then
+  CLERK_JWKS_URL="${CLERK_JWKS_URL:-https://clerk.lumavi.techtovium.ai/.well-known/jwks.json}"
+else
+  CLERK_JWKS_URL="${CLERK_JWKS_URL:-https://brave-pony-81.clerk.accounts.dev/.well-known/jwks.json}"
+fi
 
 echo "==> Authenticating with gcloud..."
 gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet

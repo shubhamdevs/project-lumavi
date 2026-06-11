@@ -131,3 +131,10 @@ export async function getWorkspaceAssets(token: string, workspaceId: string) {
   }> }>(`/dashboard/${workspaceId}/assets`, { token });
 }
 
+export async function deleteWorkspaceAsset(token: string, workspaceId: string, assetId: string) {
+  return request<{ success: boolean }>(`/dashboard/${workspaceId}/assets/${assetId}`, {
+    method: 'DELETE',
+    token,
+  });
+}
+

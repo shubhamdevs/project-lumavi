@@ -327,9 +327,10 @@ export default function Sidebar({
           </div>
           <button
             onClick={() => signOut(() => window.location.href = '/login')}
-            className="p-1.5 rounded-lg text-neutral-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-neutral-100 dark:hover:bg-neutral-800/50 transition duration-150 cursor-pointer flex items-center justify-center shrink-0"
+            className="p-1.5 px-3 rounded-lg text-sm font-medium text-neutral-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition duration-150 cursor-pointer flex items-center justify-center gap-2 shrink-0 border border-transparent hover:border-red-100 dark:hover:border-red-900/50"
             title="Sign Out"
           >
+            <span>Logout</span>
             <i className="ti ti-logout text-base" />
           </button>
         </div>

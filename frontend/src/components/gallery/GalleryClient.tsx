@@ -267,6 +267,26 @@ export default function GalleryClient({ workspaceId }: GalleryClientProps) {
                   <IconDownload className="h-4 w-4" />
                   <span>Download Full Resolution</span>
                 </a>
+                <button
+                  onClick={async () => {
+                    if (confirm('Are you sure you want to delete this asset? This cannot be undone.')) {
+                      try {
+                        const token = await getToken();
+                        if (!token) return;
+                        await import('@/lib/api').then((m) => m.deleteWorkspaceAsset(token, workspaceId, selectedAsset.id));
+                        setAssets((prev) => prev.filter((a) => a.id !== selectedAsset.id));
+                        setSelectedAsset(null);
+                        toast.success('Asset deleted successfully');
+                      } catch (err: any) {
+                        toast.error(err.message || 'Failed to delete asset');
+                      }
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 transition duration-150 cursor-pointer"
+                >
+                  <IconX className="h-4 w-4" />
+                  <span>Delete Asset</span>
+                </button>
               </div>
 
             </div>
