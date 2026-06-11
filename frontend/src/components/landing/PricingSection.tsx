@@ -1,63 +1,166 @@
-import Link from 'next/link';
+"use client";
+
+import Link from "next/link";
+import { AnimatedSection } from "./AnimatedSection";
+
+const CHECK_ICON = (accent: string) => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="mt-0.5 flex-shrink-0">
+    <path d="M3 8l3.5 3.5L13 5" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const PLANS = [
+  {
+    name: "Starter",
+    price: "Free",
+    period: "",
+    description: "For solo creators exploring AI generation",
+    features: [
+      "50 generations/month",
+      "Standard image generation",
+      "Standard resolution exports",
+    ],
+    cta: "Get Started",
+    ctaHref: "/register",
+    popular: false,
+    accent: "var(--landing-text-muted)",
+  },
+  {
+    name: "Professional",
+    price: "$29",
+    period: "/mo",
+    description: "For marketers who need consistent, on-brand assets",
+    features: [
+      "Unlimited image generations",
+      "1 Brand Model training",
+      "High-resolution exports",
+      "Video generation (basic)",
+      "AI copywriting",
+    ],
+    cta: "Start Free Trial",
+    ctaHref: "/register",
+    popular: true,
+    accent: "var(--landing-accent-primary)",
+  },
+  {
+    name: "Agency",
+    price: "$99",
+    period: "/mo",
+    description: "For teams managing multiple brands at scale",
+    features: [
+      "Everything in Professional",
+      "Unlimited Brand Models",
+      "Advanced video generation",
+      "Team collaboration & approvals",
+      "Direct channel publishing",
+      "Priority support",
+    ],
+    cta: "Contact Sales",
+    ctaHref: "mailto:sales@lumavi.ai",
+    popular: false,
+    accent: "var(--landing-accent-secondary)",
+  },
+];
 
 export function PricingSection() {
   return (
-    <section className="py-32 px-gutter bg-surface" id="pricing">
-      <div className="max-w-container-max mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="font-headline-h1 text-headline-h1-mobile md:text-headline-h1 text-on-background mb-4">Simple, transparent pricing.</h2>
-          <p className="font-body-lg text-body-lg text-on-surface-variant">Start for free, scale when you need to.</p>
+    <AnimatedSection
+      className="landing-section"
+      id="pricing"
+      direction="scale"
+      stagger={0.12}
+    >
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "var(--landing-bg)" }}
+      />
+      <div className="relative z-10 max-w-[1280px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16" data-animate>
+          <h2 className="font-[var(--font-syne)] text-4xl md:text-5xl font-bold text-[var(--landing-text-primary)] mb-4">
+            Start free. Scale when you&apos;re ready.
+          </h2>
+          <p className="text-lg text-[var(--landing-text-secondary)]">
+            No credit card required. No commitment.
+          </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {/* Starter */}
-          <div className="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col">
-            <h3 className="font-headline-h2 text-[24px] text-on-background mb-2">Starter</h3>
-            <div className="flex items-baseline gap-1 mb-6">
-              <span className="font-display-hero text-[48px] leading-none text-on-background">Free</span>
+
+        {/* Pricing cards */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-start">
+          {PLANS.map((plan, i) => (
+            <div
+              key={i}
+              data-animate
+              className={`relative flex flex-col rounded-2xl p-8 transition-all duration-300 ${
+                plan.popular
+                  ? "glass-card-elevated glow-pulse md:-translate-y-4"
+                  : "glass-card"
+              }`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--landing-accent-primary)] text-white px-4 py-1 rounded-full text-[10px] uppercase tracking-[0.15em] font-bold">
+                  Most Popular
+                </div>
+              )}
+
+              <h3 className="font-[var(--font-syne)] text-2xl font-bold text-[var(--landing-text-primary)] mb-2">
+                {plan.name}
+              </h3>
+              <div className="flex items-baseline gap-1 mb-4">
+                <span className="font-[var(--font-syne)] text-5xl font-extrabold text-[var(--landing-text-primary)]">
+                  {plan.price}
+                </span>
+                {plan.period && (
+                  <span className="text-[var(--landing-text-muted)] text-sm">
+                    {plan.period}
+                  </span>
+                )}
+              </div>
+              <p className="text-[var(--landing-text-secondary)] text-sm mb-8 pb-6 border-b border-white/5 flex-grow">
+                {plan.description}
+              </p>
+
+              {plan.ctaHref.startsWith("mailto:") ? (
+                <a
+                  href={plan.ctaHref}
+                  className={`w-full text-center py-3.5 px-4 rounded-xl font-semibold text-[15px] transition-all duration-300 mb-6 ${
+                    plan.popular
+                      ? "btn-landing-primary"
+                      : "btn-landing-secondary"
+                  }`}
+                >
+                  {plan.cta}
+                </a>
+              ) : (
+                <Link
+                  href={plan.ctaHref}
+                  className={`w-full text-center py-3.5 px-4 rounded-xl font-semibold text-[15px] transition-all duration-300 mb-6 ${
+                    plan.popular
+                      ? "btn-landing-primary"
+                      : "btn-landing-secondary"
+                  }`}
+                >
+                  {plan.cta}
+                </Link>
+              )}
+
+              <ul className="space-y-3.5">
+                {plan.features.map((feature, j) => (
+                  <li
+                    key={j}
+                    className="flex items-start gap-3 text-[var(--landing-text-secondary)] text-sm"
+                  >
+                    {CHECK_ICON(
+                      plan.popular ? "#6354ff" : "rgba(240,238,246,0.3)"
+                    )}
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mb-8 pb-8 border-b border-outline-variant/20 flex-grow">Perfect for individuals exploring AI generation.</p>
-            <Link className="w-full text-center py-3 px-4 rounded-xl font-button-text text-button-text border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors mb-6" href="/register">Get Started</Link>
-            <ul className="space-y-4 font-body-sm text-body-sm text-on-surface">
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> 50 generations/month</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Basic image generation</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Standard resolution</li>
-            </ul>
-          </div>
-          {/* Professional */}
-          <div className="p-8 rounded-2xl bg-surface border-2 border-primary-container relative shadow-xl shadow-primary-container/10 flex flex-col transform md:-translate-y-4">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-container text-on-primary-container px-4 py-1 rounded-full font-label-mono text-[10px] uppercase tracking-wider font-bold">Most Popular</div>
-            <h3 className="font-headline-h2 text-[24px] text-on-background mb-2">Professional</h3>
-            <div className="flex items-baseline gap-1 mb-6">
-              <span className="font-display-hero text-[48px] leading-none text-on-background">$29</span>
-              <span className="font-body-sm text-on-surface-variant">/mo</span>
-            </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mb-8 pb-8 border-b border-outline-variant/20 flex-grow">For marketers needing consistent, on-brand assets.</p>
-            <Link className="w-full text-center py-3 px-4 rounded-xl font-button-text text-button-text bg-primary-container text-on-primary-container glow-hover transition-all duration-300 active:scale-95 mb-6" href="/register">Start Free Trial</Link>
-            <ul className="space-y-4 font-body-sm text-body-sm text-on-surface">
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> Unlimited image generations</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> 1 Brand Model training</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> High-res exports</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-primary-container mt-0.5">check</span> Basic video generation</li>
-            </ul>
-          </div>
-          {/* Agency */}
-          <div className="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col">
-            <h3 className="font-headline-h2 text-[24px] text-on-background mb-2">Agency</h3>
-            <div className="flex items-baseline gap-1 mb-6">
-              <span className="font-display-hero text-[48px] leading-none text-on-background">$99</span>
-              <span className="font-body-sm text-on-surface-variant">/mo</span>
-            </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant mb-8 pb-8 border-b border-outline-variant/20 flex-grow">For teams managing multiple brands and high volumes.</p>
-            <a className="w-full text-center py-3 px-4 rounded-xl font-button-text text-button-text border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors mb-6" href="mailto:sales@lumavi.ai">Contact Sales</a>
-            <ul className="space-y-4 font-body-sm text-body-sm text-on-surface">
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Everything in Professional</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Unlimited Brand Models</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Advanced video generation</li>
-              <li className="flex items-start gap-3"><span className="material-symbols-outlined text-[18px] text-on-surface-variant mt-0.5">check</span> Team collaboration tools</li>
-            </ul>
-          </div>
+          ))}
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
