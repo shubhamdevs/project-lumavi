@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { UserButton, useUser, useAuth } from '@clerk/nextjs';
+import { UserButton, useUser, useAuth, useClerk } from '@clerk/nextjs';
 import { toast } from 'sonner';
 import { topUpCredits } from '@/lib/api';
 
@@ -29,6 +29,7 @@ export default function Sidebar({
   const pathname = usePathname();
   const { user } = useUser();
   const { getToken } = useAuth();
+  const { signOut } = useClerk();
   const [credits, setCredits] = useState(initialCredits);
   const [isToppingUp, setIsToppingUp] = useState(false);
 
@@ -46,8 +47,8 @@ export default function Sidebar({
   ];
 
   const libraryLinks = [
-    { name: 'Asset Library', icon: 'ti-folder' },
-    { name: 'Team Members', icon: 'ti-users' },
+    { name: 'Gallery', href: '/gallery', icon: 'ti-folder' },
+    { name: 'Team Members', icon: 'ti-users', isComingSoon: true },
   ];
 
   const handleComingSoon = (feature: string) => {
@@ -220,22 +221,47 @@ export default function Sidebar({
               Library & Workspace
             </span>
             <ul className="space-y-1">
-              {libraryLinks.map((link) => (
-                <li key={link.name}>
-                  <button
-                    onClick={() => handleComingSoon(link.name)}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm text-neutral-400 dark:text-neutral-500 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/10 cursor-pointer group text-left"
-                  >
-                    <div className="flex items-center gap-3">
+              {libraryLinks.map((link) => {
+                const isActive = pathname === link.href;
+                if (link.isComingSoon || !link.href) {
+                  return (
+                    <li key={link.name}>
+                      <button
+                        onClick={() => handleComingSoon(link.name)}
+                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm text-neutral-400 dark:text-neutral-500 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/10 cursor-pointer group text-left"
+                      >
+                        <div className="flex items-center gap-3">
+                          <i className={`ti ${link.icon} text-base shrink-0`} />
+                          <span>{link.name}</span>
+                        </div>
+                        <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 px-1.5 py-0.5 rounded font-medium opacity-80 group-hover:opacity-100">
+                          Soon
+                        </span>
+                      </button>
+                    </li>
+                  );
+                }
+
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={onClose}
+                      className={`
+                        flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-150 group
+                        ${
+                          isActive
+                            ? 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-900 dark:text-neutral-50 font-medium'
+                            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800/30'
+                        }
+                      `}
+                    >
                       <i className={`ti ${link.icon} text-base shrink-0`} />
                       <span>{link.name}</span>
-                    </div>
-                    <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 px-1.5 py-0.5 rounded font-medium opacity-80 group-hover:opacity-100">
-                      Soon
-                    </span>
-                  </button>
-                </li>
-              ))}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -299,6 +325,13 @@ export default function Sidebar({
               {user?.primaryEmailAddress?.emailAddress || 'User Profile'}
             </p>
           </div>
+          <button
+            onClick={() => signOut(() => window.location.href = '/login')}
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-neutral-100 dark:hover:bg-neutral-800/50 transition duration-150 cursor-pointer flex items-center justify-center shrink-0"
+            title="Sign Out"
+          >
+            <i className="ti ti-logout text-base" />
+          </button>
         </div>
       </aside>
     </>
