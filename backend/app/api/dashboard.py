@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.auth import get_current_user_id
 from app.db.connection import get_db
-from app.db.models import WorkspaceMember, Workspace, Organization, BrandGuidelines, Asset, CreditLedger
+from app.db.models import WorkspaceMember, Workspace, Organization, BrandGuidelines, Asset, CreditLedger, GenerationJob
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
@@ -107,3 +107,51 @@ async def top_up_credits(
     ))
     await db.commit()
     return {"success": True, "new_balance": org.credit_pool}
+
+
+@router.get("/{workspace_id}/assets")
+async def get_workspace_assets(
+    workspace_id: str,
+    user_id: str = Depends(get_current_user_id),
+    db: AsyncSession = Depends(get_db),
+):
+    ws_uuid = uuid.UUID(workspace_id)
+    # Check if the user is a member of the workspace
+    member_result = await db.execute(
+        select(WorkspaceMember).where(
+            WorkspaceMember.user_id == user_id,
+            WorkspaceMember.workspace_id == ws_uuid,
+            WorkspaceMember.status == "active",
+        )
+    )
+    if not member_result.scalar_one_or_none():
+        raise HTTPException(status_code=403, detail="Not a workspace member")
+
+    # Fetch assets along with their corresponding generation job if any
+    query = (
+        select(Asset, GenerationJob)
+        .outerjoin(GenerationJob, Asset.job_id == GenerationJob.id)
+        .where(Asset.workspace_id == ws_uuid, Asset.deleted_at.is_(None))
+        .order_by(Asset.created_at.desc())
+    )
+    
+    result = await db.execute(query)
+    rows = result.all()
+
+    return {
+        "assets": [
+            {
+                "id": str(asset.id),
+                "type": asset.type,
+                "name": asset.name,
+                "url": asset.url,
+                "thumbnail_url": asset.thumbnail_url,
+                "created_at": asset.created_at.isoformat(),
+                "prompt": job.prompt_raw if job else (asset.name or ""),
+                "model_used": job.model_used if job else None,
+                "metadata": job.job_metadata if job else None,
+            }
+            for asset, job in rows
+        ]
+    }
+
