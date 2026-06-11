@@ -89,7 +89,7 @@ gcloud run services update "${BACKEND_SERVICE}" \
   --platform=managed \
   --region="${REGION}" \
   --project="${PROJECT_ID}" \
-  --set-env-vars="BACKEND_URL=${BACKEND_URL}"
+  --update-env-vars="BACKEND_URL=${BACKEND_URL}"
 
 # ── Frontend ──────────────────────────────────────────────────────────────────
 echo "==> Building frontend image (with backend URL baked in)..."
@@ -146,7 +146,7 @@ gcloud run services update "${BACKEND_SERVICE}" \
   --platform=managed \
   --region="${REGION}" \
   --project="${PROJECT_ID}" \
-  --set-env-vars="^|^FRONTEND_URL=${ALLOWED_ORIGINS}"
+  --update-env-vars="^|^FRONTEND_URL=${ALLOWED_ORIGINS}"
 
 echo ""
 echo "============================================================"
