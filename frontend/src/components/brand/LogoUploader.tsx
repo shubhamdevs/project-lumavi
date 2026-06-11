@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { IconUpload, IconLoader2, IconCheck, IconAlertCircle } from '@tabler/icons-react';
+import { IconUpload, IconLoader2, IconCheck } from '@tabler/icons-react';
 import { useAuth } from '@clerk/nextjs';
 import { uploadBrandLogo, analyzeLogo } from '@/lib/api';
 import { BrandSignals } from '@/lib/generation/brand-extractor';
@@ -120,10 +120,10 @@ export default function LogoUploader({
           toast.error('Failed to extract brand signals.');
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setIsUploading(false);
       setIsAnalyzing(false);
-      toast.error(err?.message || 'An error occurred during upload.');
+      toast.error((err as Error)?.message || 'An error occurred during upload.');
     }
   };
 

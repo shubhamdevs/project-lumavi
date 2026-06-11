@@ -20,7 +20,7 @@ interface SidebarProps {
 export default function Sidebar({
   workspaceId,
   workspaceName,
-  orgId,
+  orgId: _orgId,
   primaryColor,
   initialCredits,
   isOpen,
@@ -64,8 +64,9 @@ export default function Sidebar({
       const res = await topUpCredits(token, workspaceId);
       setCredits(res.new_balance);
       toast.success('Credits successfully topped up (+100)!');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to top up credits');
+    } catch (err: unknown) {
+      const topUpError = err as Error;
+      toast.error(topUpError.message || 'Failed to top up credits');
     } finally {
       setIsToppingUp(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import type { UpdateDataFn } from '../types';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +16,7 @@ interface StepOrgProps {
   data: {
     org: { name: string; industry: string; useCase: string };
   };
-  updateData: (updater: (prev: any) => any) => void;
+  updateData: UpdateDataFn;
   onNext: () => void;
 }
 
@@ -42,7 +43,7 @@ export default function StepOrg({ data, updateData, onNext }: StepOrgProps) {
           Tell us about your organization
         </h2>
         <p className="text-sm text-neutral-500">
-          We'll customize your Lumavi experience based on your team.
+          We&apos;ll customize your Lumavi experience based on your team.
         </p>
       </div>
 

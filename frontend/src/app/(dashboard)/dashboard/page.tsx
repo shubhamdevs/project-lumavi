@@ -4,6 +4,14 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import DashboardHome from '@/components/dashboard/DashboardHome';
 
 const BACKEND = process.env.BACKEND_URL || 'http://localhost:8000';
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+// Capture time at module load (server startup) — acceptable for new-account UI hinting
+const MODULE_LOAD_TIME = Date.now();
+
+function isNewAccount(createdAt: number | null | undefined): boolean {
+  if (!createdAt) return false;
+  return MODULE_LOAD_TIME - createdAt < SEVEN_DAYS_MS;
+}
 
 async function fetchDashboardSummary(token: string, workspaceId: string) {
   const res = await fetch(`${BACKEND}/dashboard/${workspaceId}/summary`, {
@@ -43,7 +51,6 @@ export default async function DashboardPage() {
   const summary = await fetchDashboardSummary(token, workspaceId);
   if (!summary) redirect('/onboarding');
 
-  const accountAgeMs = Date.now() - (clerkUser.createdAt || Date.now());
 
   return (
     <DashboardHome
@@ -57,7 +64,7 @@ export default async function DashboardPage() {
         totalAssets: summary.asset_count,
         teamMembersCount: summary.member_count,
         recentAssets: summary.recent_assets,
-        isNewAccount: accountAgeMs < 7 * 24 * 60 * 60 * 1000,
+        isNewAccount: isNewAccount(clerkUser.createdAt),
         brandGuideline: null,
       }}
     />

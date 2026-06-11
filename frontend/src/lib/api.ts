@@ -127,7 +127,7 @@ export async function getWorkspaceAssets(token: string, workspaceId: string) {
     created_at: string;
     prompt?: string;
     model_used?: string | null;
-    metadata?: any;
+    metadata?: Record<string, string | number | boolean | null | undefined>;
   }> }>(`/dashboard/${workspaceId}/assets`, { token });
 }
 

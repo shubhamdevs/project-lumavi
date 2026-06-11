@@ -31,8 +31,9 @@ export default function StepPreview({ data, onBack, onSubmit }: StepPreviewProps
     setError('');
     try {
       await onSubmit();
-    } catch (err: any) {
-      setError(err?.message || 'Failed to complete onboarding. Please try again.');
+    } catch (err: unknown) {
+      const submitError = err as Error;
+      setError(submitError?.message || 'Failed to complete onboarding. Please try again.');
       setLoading(false);
     }
   };
@@ -66,7 +67,7 @@ export default function StepPreview({ data, onBack, onSubmit }: StepPreviewProps
               AI Creative Preview
             </span>
             <p className="text-sm font-semibold leading-relaxed">
-              "Your first branded image will appear here"
+              &ldquo;Your first branded image will appear here&rdquo;
             </p>
           </div>
         </div>

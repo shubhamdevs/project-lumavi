@@ -2,8 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsapConfig";
-import { prefersReducedMotion } from "@/lib/gsapConfig";
+import { gsap, prefersReducedMotion } from "@/lib/gsapConfig";
 
 interface AnimatedSectionProps {
   children: ReactNode;

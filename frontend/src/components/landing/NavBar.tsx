@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsapConfig";
+import { gsap } from "@/lib/gsapConfig";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },

@@ -6,7 +6,7 @@ import { useAuth } from '@clerk/nextjs';
 import { toast } from 'sonner';
 import {
   IconSearch, IconDownload, IconCopy, IconX,
-  IconSparkles, IconPhoto, IconExternalLink, IconCalendar,
+  IconSparkles, IconPhoto, IconCalendar,
   IconCpu
 } from '@tabler/icons-react';
 import { getWorkspaceAssets } from '@/lib/api';
@@ -20,7 +20,7 @@ interface AssetData {
   created_at: string;
   prompt?: string;
   model_used?: string | null;
-  metadata?: any;
+  metadata?: { aspect_ratio?: string; [key: string]: string | number | boolean | null | undefined };
 }
 
 interface GalleryClientProps {
@@ -44,9 +44,10 @@ export default function GalleryClient({ workspaceId }: GalleryClientProps) {
         if (active) {
           setAssets(res.assets || []);
         }
-      } catch (err: any) {
-        console.error('Error fetching assets:', err);
-        toast.error(err.message || 'Failed to load assets');
+      } catch (err: unknown) {
+        const error = err as Error;
+        console.error('Error fetching assets:', error);
+        toast.error(error.message || 'Failed to load assets');
       } finally {
         if (active) {
           setLoading(false);
@@ -129,7 +130,7 @@ export default function GalleryClient({ workspaceId }: GalleryClientProps) {
           </div>
           <h3 className="text-lg font-bold text-neutral-800 dark:text-neutral-200">No assets found</h3>
           <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1.5 max-w-sm font-medium">
-            You haven't generated any images in this workspace yet. Let's create something beautiful!
+            You haven&apos;t generated any images in this workspace yet. Let&apos;s create something beautiful!
           </p>
           <Link
             href="/generate/image"
@@ -277,8 +278,9 @@ export default function GalleryClient({ workspaceId }: GalleryClientProps) {
                         setAssets((prev) => prev.filter((a) => a.id !== selectedAsset.id));
                         setSelectedAsset(null);
                         toast.success('Asset deleted successfully');
-                      } catch (err: any) {
-                        toast.error(err.message || 'Failed to delete asset');
+                      } catch (err: unknown) {
+                        const deleteError = err as Error;
+                        toast.error(deleteError.message || 'Failed to delete asset');
                       }
                     }
                   }}

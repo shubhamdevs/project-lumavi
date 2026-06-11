@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import type { UpdateDataFn } from '../types';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -8,7 +9,7 @@ interface StepWorkspaceProps {
   data: {
     workspace: { name: string; description: string };
   };
-  updateData: (updater: (prev: any) => any) => void;
+  updateData: UpdateDataFn;
   onNext: () => void;
   onBack: () => void;
 }

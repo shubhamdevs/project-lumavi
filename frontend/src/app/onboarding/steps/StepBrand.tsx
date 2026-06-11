@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import type { UpdateDataFn } from '../types';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -32,7 +33,7 @@ interface StepBrandProps {
       composition: string;
     };
   };
-  updateData: (updater: (prev: any) => any) => void;
+  updateData: UpdateDataFn;
   onNext: () => void;
   onBack: () => void;
 }

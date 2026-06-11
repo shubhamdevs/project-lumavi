@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -16,6 +16,13 @@ interface Asset {
   created_at: string;
 }
 
+interface BrandGuideline {
+  colors?: { primary?: string; secondary?: string };
+  typography?: { display?: string; body?: string };
+  audience?: string;
+  tone?: { archetype?: string } | string;
+}
+
 interface DashboardPayload {
   userName: string;
   workspaceName: string;
@@ -27,15 +34,22 @@ interface DashboardPayload {
   teamMembersCount: number;
   recentAssets: Asset[];
   isNewAccount: boolean;
-  brandGuideline: any;
+  brandGuideline: BrandGuideline | null;
+}
+
+function getGreeting() {
+  const hours = new Date().getHours();
+  if (hours < 12) return 'Good morning';
+  if (hours < 18) return 'Good afternoon';
+  return 'Good evening';
 }
 
 export default function DashboardHome({ data }: { data: DashboardPayload }) {
   const {
     userName,
     workspaceName,
-    workspaceId,
-    orgId,
+    workspaceId: _workspaceId,
+    orgId: _orgId,
     credits,
     brandCompleteness,
     totalAssets,
@@ -45,26 +59,14 @@ export default function DashboardHome({ data }: { data: DashboardPayload }) {
     brandGuideline,
   } = data;
 
-  const [greeting, setGreeting] = useState('Welcome back');
-
-  // Set greeting based on current time of day
-  useEffect(() => {
-    const hours = new Date().getHours();
-    if (hours < 12) {
-      setGreeting('Good morning');
-    } else if (hours < 18) {
-      setGreeting('Good afternoon');
-    } else {
-      setGreeting('Good evening');
-    }
-  }, []);
+  const greeting = getGreeting();
 
   // Compute checklist states
   const colorsSet = !!(brandGuideline?.colors?.primary || brandGuideline?.colors?.secondary);
   const typographySet = !!(brandGuideline?.typography?.display || brandGuideline?.typography?.body);
   const audienceToneSet = !!(
     brandGuideline?.audience &&
-    (brandGuideline?.tone?.archetype || brandGuideline?.tone)
+    (typeof brandGuideline?.tone === 'object' ? brandGuideline.tone?.archetype : brandGuideline?.tone)
   );
   const assetCreated = totalAssets > 0;
   const teamInvited = teamMembersCount > 1;
@@ -186,7 +188,7 @@ export default function DashboardHome({ data }: { data: DashboardPayload }) {
               <div className="flex-1 min-w-0">
                 <h4 className="text-sm font-bold text-amber-800 dark:text-amber-300">Complete Brand Guidelines</h4>
                 <p className="text-xs text-amber-700 dark:text-amber-400/90 mt-1 leading-relaxed">
-                  Your brand profile is only <span className="font-semibold">{brandCompleteness}%</span> complete. To unlock the full power of Lumavi's image and video creation tools, specify your fonts, tone of voice, and brand colors.
+                  Your brand profile is only <span className="font-semibold">{brandCompleteness}%</span> complete. To unlock the full power of Lumavi&apos;s image and video creation tools, specify your fonts, tone of voice, and brand colors.
                 </p>
                 <Link
                   href="/brand"

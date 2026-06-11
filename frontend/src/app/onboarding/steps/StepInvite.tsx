@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import type { UpdateDataFn } from '../types';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { X, Plus, Users } from 'lucide-react';
@@ -9,7 +10,7 @@ interface StepInviteProps {
   data: {
     invites: string[];
   };
-  updateData: (updater: (prev: any) => any) => void;
+  updateData: UpdateDataFn;
   onNext: () => void;
   onBack: () => void;
 }

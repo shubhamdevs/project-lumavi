@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -18,14 +18,23 @@ import {
 
 const BACKEND = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
 
+interface BrandConfig {
+  completeness?: number;
+  imagery_style?: string;
+  photography_style?: string;
+  color_mood?: string;
+  tone?: { archetype?: string };
+  brand_is_not?: string;
+}
+
 interface ImageGeneratorClientProps {
   workspaceId: string;
   orgId: string;
   initialBalance: number;
-  brand: any;
+  brand: BrandConfig | null;
 }
 
-export default function ImageGeneratorClient({ workspaceId, orgId, initialBalance, brand }: ImageGeneratorClientProps) {
+export default function ImageGeneratorClient({ workspaceId, initialBalance, brand }: ImageGeneratorClientProps) {
   const [prompt, setPrompt] = useState('');
   const [aspectRatio, setAspectRatio] = useState<'1:1' | '16:9' | '9:16' | '4:5'>('1:1');
   const [quality, setQuality] = useState<'standard' | 'high'>('standard');
@@ -129,10 +138,11 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
       const data = await submitImageJob(token, workspaceId, prompt, aspectRatio, quality);
       setJobId(data.job_id);
       setJobStatus('pending');
-    } catch (err: any) {
-      setError(err.message || 'Submission failed');
+    } catch (err: unknown) {
+      const genError = err as Error;
+      setError(genError.message || 'Submission failed');
       setIsGenerating(false);
-      toast.error(err.message || 'Failed to start generation');
+      toast.error(genError.message || 'Failed to start generation');
     }
   };
 
@@ -147,8 +157,9 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
       setVariationJobIds(data.job_ids);
       setBalance((p) => Math.max(0, p - 4));
       toast.success('Spawning 4 concurrent image variations');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to generate variations');
+    } catch (err: unknown) {
+      const varError = err as Error;
+      toast.error(varError.message || 'Failed to generate variations');
     } finally {
       setIsGeneratingVariations(false);
     }
@@ -168,7 +179,7 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
     if (constructedPrompt) { navigator.clipboard.writeText(constructedPrompt); toast.success('Prompt copied'); }
   };
 
-  const hasBrandSetup = brand && brand.completeness > 0;
+  const hasBrandSetup = brand && (brand.completeness ?? 0) > 0;
   const brandModifiers: string[] = [];
   if (hasBrandSetup) {
     if (brand.imagery_style) brandModifiers.push(`• Imagery style: ${brand.imagery_style}`);
@@ -229,7 +240,7 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
                     <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 block">Aspect ratio</span>
                     <div className="grid grid-cols-2 gap-2">
                       {ratioOptions.map((opt) => (
-                        <button type="button" key={opt.id} onClick={() => setAspectRatio(opt.id as any)} disabled={isGenerating} className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all cursor-pointer ${aspectRatio === opt.id ? 'border-neutral-950 bg-neutral-50/50 dark:border-neutral-100 dark:bg-neutral-900/20' : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900/40'}`}>
+                        <button type="button" key={opt.id} onClick={() => setAspectRatio(opt.id as '1:1' | '16:9' | '9:16' | '4:5')} disabled={isGenerating} className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all cursor-pointer ${aspectRatio === opt.id ? 'border-neutral-950 bg-neutral-50/50 dark:border-neutral-100 dark:bg-neutral-900/20' : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900/40'}`}>
                           <div className="h-10 flex items-center justify-center mb-2"><div className={`border-2 border-neutral-400 dark:border-neutral-600 rounded bg-neutral-100 dark:bg-neutral-800/40 ${opt.widthClass}`} /></div>
                           <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 block">{opt.label}</span>
                           <span className="text-[10px] text-neutral-400 dark:text-neutral-500">{opt.detail}</span>
@@ -241,7 +252,7 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
                     <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 block">Quality</span>
                     <div className="space-y-2">
                       {[{ id: 'standard', title: 'Standard', desc: '2× faster, great for drafts', cost: 3 }, { id: 'high', title: 'High Resolution', desc: 'Best quality, production ready', cost: 6 }].map((opt) => (
-                        <button type="button" key={opt.id} onClick={() => setQuality(opt.id as any)} disabled={isGenerating} className={`w-full flex items-center justify-between p-3.5 rounded-xl border text-left transition-all cursor-pointer ${quality === opt.id ? 'border-neutral-950 bg-neutral-50/50 dark:border-neutral-100 dark:bg-neutral-900/20' : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900/40'}`}>
+                        <button type="button" key={opt.id} onClick={() => setQuality(opt.id as 'standard' | 'high')} disabled={isGenerating} className={`w-full flex items-center justify-between p-3.5 rounded-xl border text-left transition-all cursor-pointer ${quality === opt.id ? 'border-neutral-950 bg-neutral-50/50 dark:border-neutral-100 dark:bg-neutral-900/20' : 'border-neutral-200 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900/40'}`}>
                           <div className="space-y-0.5"><span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 block">{opt.title}</span><span className="text-[11px] text-neutral-400 dark:text-neutral-500 leading-tight block">{opt.desc}</span></div>
                           <span className="text-xs font-bold text-neutral-700 dark:text-neutral-300">{opt.cost} credits</span>
                         </button>
@@ -282,7 +293,7 @@ export default function ImageGeneratorClient({ workspaceId, orgId, initialBalanc
             ) : !jobStatus && !outputUrl && !error ? (
               <div className="flex flex-col items-center justify-center p-12 rounded-2xl border-2 border-dashed border-neutral-200 dark:border-neutral-800 aspect-square w-full">
                 <div className="p-4 bg-neutral-50 dark:bg-neutral-900/50 text-neutral-400 dark:text-neutral-500 rounded-2xl mb-4"><IconSparkles className="w-10 h-10" /></div>
-                <div className="text-center space-y-1"><p className="text-base font-bold text-neutral-700 dark:text-neutral-200">Your image will appear here</p><p className="text-xs text-neutral-400 dark:text-neutral-500">Results stream in as they're generated</p></div>
+                <div className="text-center space-y-1"><p className="text-base font-bold text-neutral-700 dark:text-neutral-200">Your image will appear here</p><p className="text-xs text-neutral-400 dark:text-neutral-500">Results stream in as they&apos;re generated</p></div>
               </div>
             ) : isGenerating || jobStatus === 'pending' || jobStatus === 'processing' ? (
               <div className="relative flex flex-col items-center justify-center p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/30 dark:bg-neutral-950/20 aspect-square w-full overflow-hidden">

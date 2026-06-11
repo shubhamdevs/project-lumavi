@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -37,15 +36,30 @@ import {
   IconPackage,
   IconBrush,
   IconLayersIntersect,
-  IconCheck,
 } from '@tabler/icons-react';
 
 import LogoUploader from './LogoUploader';
 import { saveBrandSection } from '@/lib/api';
 import { BrandSignals } from '@/lib/generation/brand-extractor';
 
+interface BrandInitialData {
+  completeness?: number;
+  logos?: { light?: string; dark?: string };
+  colors?: { primary?: string; secondary?: string };
+  color_mood?: string;
+  photography_style?: string;
+  composition?: string;
+  lighting?: string;
+  tone?: { archetype?: string };
+  brand_keywords?: string[];
+  brand_is_not?: string;
+  brand_personality?: string;
+  audience?: string;
+  typography?: { display?: string; body?: string; feel?: string };
+}
+
 interface BrandHubProps {
-  initialData: any;
+  initialData: BrandInitialData;
   workspaceId: string;
 }
 
@@ -191,8 +205,8 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
       });
       setCompleteness(result.completeness ?? completeness);
       toast.success('Visual identity saved successfully');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to save visual identity');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to save visual identity');
     } finally {
       setIsSavingVisual(false);
     }
@@ -211,8 +225,8 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
       });
       setCompleteness(result.completeness ?? completeness);
       toast.success('Brand voice saved successfully');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to save brand voice');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to save brand voice');
     } finally {
       setIsSavingVoice(false);
     }
@@ -226,8 +240,8 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
       const result = await saveBrandSection(token, workspaceId, 'audience', { audience });
       setCompleteness(result.completeness ?? completeness);
       toast.success('Audience intelligence saved successfully');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to save audience intelligence');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to save audience intelligence');
     } finally {
       setIsSavingAudience(false);
     }
@@ -243,8 +257,8 @@ export default function BrandHub({ initialData, workspaceId }: BrandHubProps) {
       });
       setCompleteness(result.completeness ?? completeness);
       toast.success('Typography guidelines saved successfully');
-    } catch (err: any) {
-      toast.error(err.message || 'Failed to save typography guidelines');
+    } catch (err: unknown) {
+      toast.error((err as Error).message || 'Failed to save typography guidelines');
     } finally {
       setIsSavingTypography(false);
     }
