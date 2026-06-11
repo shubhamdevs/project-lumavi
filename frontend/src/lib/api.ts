@@ -112,3 +112,22 @@ export function createJobStream(jobId: string, token: string): EventSource {
   const url = `${BACKEND}/jobs/${jobId}/stream?token=${encodeURIComponent(token)}`;
   return new EventSource(url);
 }
+
+export async function getOnboardingWorkspace(token: string) {
+  return request<{ workspace_id: string | null }>('/onboarding/workspace', { token });
+}
+
+export async function getWorkspaceAssets(token: string, workspaceId: string) {
+  return request<{ assets: Array<{
+    id: string;
+    type: string;
+    name: string | null;
+    url: string;
+    thumbnail_url: string | null;
+    created_at: string;
+    prompt?: string;
+    model_used?: string | null;
+    metadata?: any;
+  }> }>(`/dashboard/${workspaceId}/assets`, { token });
+}
+

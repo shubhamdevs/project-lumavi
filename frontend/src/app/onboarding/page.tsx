@@ -8,26 +8,12 @@ export const metadata = {
   description: 'Set up your organization, workspace, and brand profile in Lumavi.',
 };
 
-const BACKEND = process.env.BACKEND_URL || 'http://localhost:8000';
-
 export default async function OnboardingPage() {
   const authData = await auth();
   const userId = authData.userId;
 
   if (!userId) {
     redirect('/login');
-  }
-
-  const token = await authData.getToken();
-  if (token) {
-    const res = await fetch(`${BACKEND}/onboarding/workspace`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: 'no-store',
-    });
-    if (res.ok) {
-      const { workspace_id } = await res.json();
-      if (workspace_id) redirect('/dashboard');
-    }
   }
 
   return (
@@ -37,3 +23,4 @@ export default async function OnboardingPage() {
     </main>
   );
 }
+

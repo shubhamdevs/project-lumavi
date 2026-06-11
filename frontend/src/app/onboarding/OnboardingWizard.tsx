@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { Card, CardContent } from '@/components/ui/card';
-import { completeOnboarding } from '@/lib/api';
+import { Loader2 } from 'lucide-react';
+import { completeOnboarding, getOnboardingWorkspace } from '@/lib/api';
 import StepOrg from './steps/StepOrg';
 import StepWorkspace from './steps/StepWorkspace';
 import StepBrand from './steps/StepBrand';
@@ -15,7 +16,39 @@ export default function OnboardingWizard() {
   const router = useRouter();
   const { getToken } = useAuth();
 
+  const [checkingWorkspace, setCheckingWorkspace] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    async function checkWorkspace() {
+      try {
+        const token = await getToken();
+        if (!token) return;
+        const data = await getOnboardingWorkspace(token);
+        if (active) {
+          if (data && data.workspace_id) {
+            router.push('/dashboard');
+          } else {
+            setCheckingWorkspace(false);
+          }
+        }
+      } catch (err) {
+        console.error('Error checking workspace status:', err);
+        if (active) {
+          setCheckingWorkspace(false);
+        }
+      }
+    }
+
+    checkWorkspace();
+    return () => {
+      active = false;
+    };
+  }, [getToken, router]);
+
   const [wizardState, setWizardState] = useState({
+
+
     step: 1,
     org: { name: '', industry: '', useCase: '' },
     workspace: { name: '', description: '' },
@@ -127,6 +160,30 @@ export default function OnboardingWizard() {
   };
 
   const progressPercentage = (wizardState.step / 5) * 100;
+
+  if (checkingWorkspace) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-4 bg-neutral-50/50 dark:bg-neutral-950/40">
+        <div className="w-full max-w-[420px] text-center space-y-6">
+          <Card className="border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xl rounded-2xl overflow-hidden p-8">
+            <CardContent className="flex flex-col items-center justify-center space-y-4 p-0">
+              <div className="p-3 bg-violet-50 dark:bg-violet-950/40 rounded-2xl border border-violet-100 dark:border-violet-900/30 animate-pulse">
+                <Loader2 className="h-8 w-8 animate-spin text-violet-600 dark:text-violet-400" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-base font-semibold text-neutral-800 dark:text-neutral-200">
+                  Verifying your configuration
+                </h3>
+                <p className="text-xs text-neutral-400 dark:text-neutral-500 font-medium">
+                  Checking setup details...
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4 bg-neutral-50/50 dark:bg-neutral-950/40">
